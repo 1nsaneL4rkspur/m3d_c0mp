@@ -1,0 +1,2161 @@
+<title>神聖羅馬帝國考察誌</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    /* 極簡科技風／現代功能主義：淺色霧面銀 + 低飽和冷色點綴 */
+    color-scheme: light;
+    --bg:#f7f8f9;
+    --surface:#ffffff;
+    --surface-2:#eef0f2;
+    --ink:#22262c;
+    --ink-soft:#5c636c;
+    --ink-faint:#98a0a8;
+    --rule:#e7e9ec;
+    --rule-strong:#d6dade;
+    --accent:#6b8fa3;
+    --accent-ink:#ffffff;
+    --accent-soft:#6b8fa314;
+    --verified:#5a9d94;
+    --verified-bg:#eef4f3;
+    --verified-border:#c6dcd8;
+    --inference:#8985a3;
+    --inference-bg:#f1f0f4;
+    --inference-border:#d9d7e2;
+    --shadow: 0 1px 2px rgba(30,34,40,0.03), 0 3px 14px rgba(30,34,40,0.035);
+    --shadow-lg: 0 10px 32px rgba(30,34,40,0.07);
+    --grid-line: rgba(90,100,112,0.05);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg:#101317;
+      --surface:#171b20;
+      --surface-2:#1d2228;
+      --ink:#e5e7ea;
+      --ink-soft:#a3a9b1;
+      --ink-faint:#666d76;
+      --rule:#282e35;
+      --rule-strong:#383f47;
+      --accent:#8fb0c2;
+      --accent-ink:#0d1216;
+      --accent-soft:#8fb0c222;
+      --verified:#79b6ab;
+      --verified-bg:#16211f;
+      --verified-border:#284440;
+      --inference:#a8a4c4;
+      --inference-bg:#1e1c29;
+      --inference-border:#332f47;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 3px 14px rgba(0,0,0,0.3);
+      --shadow-lg: 0 10px 32px rgba(0,0,0,0.45);
+      --grid-line: rgba(180,190,200,0.04);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg:#101317;
+    --surface:#171b20;
+    --surface-2:#1d2228;
+    --ink:#e5e7ea;
+    --ink-soft:#a3a9b1;
+    --ink-faint:#666d76;
+    --rule:#282e35;
+    --rule-strong:#383f47;
+    --accent:#8fb0c2;
+    --accent-ink:#0d1216;
+    --accent-soft:#8fb0c222;
+    --verified:#79b6ab;
+    --verified-bg:#16211f;
+    --verified-border:#284440;
+    --inference:#a8a4c4;
+    --inference-bg:#1e1c29;
+    --inference-border:#332f47;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 3px 14px rgba(0,0,0,0.3);
+    --shadow-lg: 0 10px 32px rgba(0,0,0,0.45);
+    --grid-line: rgba(180,190,200,0.04);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background-color:var(--bg);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size:40px 40px;
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:"Noto Sans TC","Inter","Source Han Sans TC",sans-serif;
+    line-height:1.75;
+    font-size:14px;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--accent-soft); }
+  a{ color:var(--accent); text-decoration-thickness: 1px; text-underline-offset:3px; }
+
+  /* ---------- Top bar + hamburger menu ---------- */
+  .navwrap{ position:sticky; top:0; z-index:40; }
+  .topbar{
+    display:flex; flex-direction:column; gap:8px;
+    padding:10px clamp(14px,4vw,24px);
+    background:color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter:blur(14px) saturate(1.4);
+    -webkit-backdrop-filter:blur(14px) saturate(1.4);
+    border-bottom:1px solid var(--rule);
+  }
+  .topbar-row{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .topbar .brand{
+    flex:1 1 auto; min-width:0;
+    font-family:"IBM Plex Mono", monospace; font-size:9px; letter-spacing:.14em;
+    color:var(--ink-faint); text-transform:uppercase; display:flex; align-items:baseline; gap:8px;
+    overflow:hidden;
+  }
+  .topbar .brand b{
+    font-family:"Noto Sans TC",sans-serif; font-size:12.5px; letter-spacing:.01em;
+    color:var(--ink); font-weight:700; text-transform:none; white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis;
+  }
+  .filterbox-inline{
+    padding:9px clamp(14px,4vw,24px); border-bottom:1px solid var(--rule); background:var(--bg);
+  }
+  .filterbox-inline .seg{ gap:6px; flex-wrap:wrap; }
+  .filterbox-inline .seg button{
+    padding:5px 11px; font-size:9.5px; gap:5px;
+  }
+  .menu-btn{
+    flex:none; height:32px; border-radius:8px; border:1px solid var(--rule-strong);
+    background:var(--surface); cursor:pointer; padding:0 13px; box-shadow:var(--shadow);
+    display:flex; align-items:center; gap:7px; color:var(--ink-soft);
+    transition:background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
+  }
+  .menu-btn:hover{ background:var(--surface-2); box-shadow:var(--shadow-lg); }
+  .menu-btn-icon{ flex:none; display:block; }
+  .menu-btn-label{
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.06em;
+  }
+  .menu-btn[aria-expanded="true"]{
+    background:var(--accent); border-color:var(--accent); color:var(--accent-ink);
+  }
+
+  .theme-toggle{
+    flex:none; width:32px; height:32px; border-radius:8px; border:1px solid var(--rule-strong);
+    background:var(--surface); cursor:pointer; padding:0; box-shadow:var(--shadow);
+    display:flex; align-items:center; justify-content:center; color:var(--ink-soft);
+    transition:background .18s ease, border-color .18s ease, color .18s ease;
+  }
+  .theme-toggle:hover{ background:var(--surface-2); }
+  .theme-toggle svg{ display:block; }
+  .theme-toggle .icon-sun{ display:none; }
+  .theme-toggle .icon-moon{ display:block; }
+  :root[data-theme="dark"] .theme-toggle .icon-sun{ display:block; }
+  :root[data-theme="dark"] .theme-toggle .icon-moon{ display:none; }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .theme-toggle .icon-sun{ display:block; }
+    :root:not([data-theme="light"]) .theme-toggle .icon-moon{ display:none; }
+  }
+
+  .navpanel{
+    max-height:0; overflow:hidden;
+    background:color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter:blur(18px) saturate(1.4);
+    -webkit-backdrop-filter:blur(18px) saturate(1.4);
+    border-bottom:1px solid transparent;
+    box-shadow:var(--shadow-lg);
+    transition:max-height .32s ease, border-color .32s ease;
+  }
+  .navpanel.open{ max-height:80vh; overflow-y:auto; border-bottom-color:var(--rule); }
+  .navpanel-inner{
+    max-width:880px; margin:0 auto; padding:14px clamp(16px,4vw,28px) 20px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+
+  .backdrop{
+    position:fixed; inset:0; background:rgba(10,13,18,.28); z-index:35;
+    opacity:0; pointer-events:none; transition:opacity .25s ease;
+  }
+  .backdrop.show{ opacity:1; pointer-events:auto; }
+
+  .filterbox{ border:1px solid var(--rule); background:var(--surface); border-radius:8px; padding:12px; box-shadow:var(--shadow); }
+  .filterbox .label{
+    font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.12em;
+    color:var(--ink-faint); text-transform:uppercase; margin-bottom:8px; display:block;
+  }
+  .seg{ display:flex; flex-wrap:wrap; gap:6px; }
+  .seg button{
+    font-family:"IBM Plex Mono",monospace; font-size:11px;
+    padding:7px 12px; border-radius:7px; border:1px solid var(--rule-strong);
+    background:var(--surface); color:var(--ink-soft); cursor:pointer;
+    display:flex; align-items:center; gap:8px; transition:all .15s ease;
+  }
+  .seg button .dot{ width:7px;height:7px;border-radius:50%; flex:none; border:1px solid var(--rule-strong); }
+  .seg button[data-mode="verified"] .dot{ background:var(--verified); border-color:var(--verified); }
+  .seg button[data-mode="inference"] .dot{ background:var(--inference); border-color:var(--inference); }
+  .seg button[data-mode="all"] .dot{ background:var(--ink-faint); border-color:var(--ink-faint); }
+  .seg button:hover{ border-color:var(--ink-faint); }
+  .seg button.active{ background:var(--ink); color:var(--bg); font-weight:600; border-color:var(--ink); }
+  .seg button.active .dot{ border-color:var(--bg); }
+
+  nav.toc{ display:flex; flex-direction:column; gap:2px; font-size:12.5px; }
+  nav.toc a{
+    color:var(--ink-soft); text-decoration:none;
+    padding:7px 10px; border-radius:6px; border-left:2px solid transparent;
+  }
+  nav.toc a:hover{ background:var(--surface-2); color:var(--ink); }
+  nav.toc a.active{ color:var(--accent); border-left-color:var(--accent); background:var(--accent-soft); font-weight:600; }
+  nav.toc .sub{ padding-left:24px; font-size:12px; }
+
+  .navpanel-foot{
+    font-family:"IBM Plex Mono",monospace; font-size:9px; color:var(--ink-faint);
+    line-height:1.6; border-top:1px solid var(--rule); padding-top:12px;
+  }
+
+  /* ---------- Main ---------- */
+  main{ padding: 48px clamp(24px, 6vw, 88px) 120px; max-width: 880px; margin:0 auto; }
+
+  .doc-head{ margin-bottom:48px; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.18em;
+    color:var(--accent); text-transform:uppercase; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{ content:""; width:22px; height:1px; background:var(--accent); display:inline-block; }
+  h1.title{
+    font-size:clamp(24.5px,4vw,35px); margin:14px 0 10px; font-weight:800; letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .doc-head .meta{ font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-faint); }
+
+  .notice{
+    margin-top:22px; padding:16px 18px; border:1px solid var(--rule); border-left:3px solid var(--accent);
+    background:var(--surface); border-radius:8px; font-size:12.5px; color:var(--ink-soft); box-shadow:var(--shadow);
+  }
+  .notice b{ color:var(--ink); }
+
+  section.chapter{ margin-top:64px; scroll-margin-top:24px; }
+  section.chapter h2{
+    font-size:19px; font-weight:700; margin:0 0 6px; display:flex; align-items:baseline; gap:10px;
+    letter-spacing:-.01em;
+  }
+  section.chapter h2 .num{ font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:14px; font-weight:600; }
+  .chapter-rule{ height:1px; background:var(--rule); margin:14px 0 26px; }
+
+  h3.sub-head{
+    font-size:15.5px; margin:38px 0 14px; font-weight:700; scroll-margin-top:24px;
+    display:flex; align-items:center; gap:10px;
+  }
+  h3.sub-head .tag-city{
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; color:var(--ink-faint);
+    border:1px solid var(--rule-strong); padding:2px 8px; border-radius:20px; font-weight:400;
+  }
+  h4.mini-head{
+    font-size:12px; margin:30px 0 12px; font-weight:600; color:var(--ink-soft);
+    font-family:"IBM Plex Mono",monospace; letter-spacing:.06em; text-transform:uppercase;
+  }
+
+  p{ margin:0 0 16px; }
+  ul{ margin:0 0 16px; padding-left:1.3em; }
+  li{ margin-bottom:8px; }
+
+  /* claim blocks */
+  .claim{
+    position:relative;
+    padding:15px 17px 15px 19px;
+    margin:0 0 16px;
+    border-radius:10px;
+    border:1px solid var(--rule);
+    background:var(--surface);
+    box-shadow:var(--shadow);
+    transition: opacity .25s ease, filter .25s ease;
+  }
+  .claim > :last-child{ margin-bottom:0; }
+  .claim.verified{ border-left:3px solid var(--verified-border); }
+  .claim.inference{ border-left:3px solid var(--inference-border); }
+  .tagchip{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.05em;
+    padding:2px 9px; border-radius:6px; margin-bottom:10px; font-weight:600;
+  }
+  .tagchip .dot{ width:6px;height:6px;border-radius:50%; }
+  .tagchip.verified{ background:var(--verified-bg); color:var(--verified); }
+  .tagchip.verified .dot{ background:var(--verified); }
+  .tagchip.inference{ background:var(--inference-bg); color:var(--inference); }
+  .tagchip.inference .dot{ background:var(--inference); }
+
+  body.mode-verified .claim.inference,
+  body.mode-inference .claim.verified{
+    opacity:.25; filter:saturate(.3);
+  }
+
+  blockquote{
+    margin:0 0 18px; padding:2px 0 2px 16px; border-left:2px solid var(--rule-strong);
+    color:var(--ink-soft); font-style:normal; font-size:13px;
+  }
+
+  .refs{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+  .refs li{ font-size:12.5px; padding:10px 14px; background:var(--surface); border:1px solid var(--rule); border-radius:8px; }
+  .refs a{ font-weight:600; }
+  .refs .note{ display:block; font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-faint); margin-top:3px; }
+
+  .colophon{
+    margin-top:70px; padding-top:20px; border-top:1px solid var(--rule);
+    font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-faint); line-height:1.8;
+  }
+
+  .remark{
+    display:block; margin:8px 0 0; padding-left:12px; border-left:2px solid var(--rule-strong);
+    font-size:11px; color:var(--ink-faint); line-height:1.7;
+  }
+  .remark b{ color:var(--ink-faint); font-weight:600; }
+
+  /* ---------- Page tabs (top-level site nav) ---------- */
+  .pagetabs{
+    display:flex; gap:2px; overflow-x:auto; -webkit-overflow-scrolling:touch;
+    padding:0 clamp(14px,4vw,24px); border-bottom:1px solid var(--rule);
+    background:var(--bg); scrollbar-width:thin;
+  }
+  .pagetab{
+    flex:none; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.04em;
+    padding:10px 14px 9px; border:none; border-bottom:2px solid transparent;
+    background:transparent; color:var(--ink-faint); cursor:pointer; white-space:nowrap;
+    transition:color .15s ease;
+  }
+  .pagetab:hover{ color:var(--ink-soft); }
+  .pagetab.active{ color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+
+  .page[hidden]{ display:none !important; }
+
+  .map-placeholder{
+    border:1px dashed var(--rule-strong); border-radius:10px; padding:32px 20px;
+    text-align:center; color:var(--ink-faint); background:var(--surface);
+    font-size:12px; line-height:1.8; margin-bottom:22px;
+  }
+  .map-placeholder svg{ display:block; margin:0 auto 14px; opacity:.6; }
+
+  .table-wrap{ overflow-x:auto; margin:0 0 18px; border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow); }
+  table.compare{ width:100%; border-collapse:collapse; font-size:12px; }
+  table.compare th, table.compare td{
+    border-bottom:1px solid var(--rule); padding:10px 14px; text-align:left; vertical-align:top;
+  }
+  table.compare thead th{ border-top:none; }
+  table.compare tbody tr:last-child td{ border-bottom:none; }
+  table.compare th{
+    background:var(--surface-2); font-family:"IBM Plex Mono",monospace; font-size:10px;
+    letter-spacing:.04em; color:var(--ink-soft); font-weight:600; text-transform:uppercase;
+  }
+  table.compare td{ background:var(--surface); }
+  .plain-card{
+    border:1px solid var(--rule); border-radius:10px; background:var(--surface);
+    padding:14px 16px; margin:0 0 18px; box-shadow:var(--shadow);
+  }
+  .plain-card > :last-child{ margin-bottom:0; }
+
+  .role-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:12px; margin:0 0 18px; padding:0; list-style:none;
+  }
+  .role-card{
+    border:1px solid var(--rule); border-radius:10px; background:var(--surface);
+    padding:13px 15px; box-shadow:var(--shadow); position:relative;
+  }
+  .role-card::before{
+    content:""; position:absolute; left:0; top:12px; bottom:12px; width:2px;
+    background:var(--accent); border-radius:2px; opacity:.55;
+  }
+  .role-card .role-name{
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:11.5px;
+    letter-spacing:.02em; color:var(--accent); margin-bottom:5px; font-weight:600;
+  }
+  .role-card .role-desc{ margin:0; color:var(--ink-soft); }
+
+  .harvest-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:12px; margin:0 0 18px; padding:0; list-style:none;
+  }
+  .harvest-card{
+    border:1px solid var(--rule); border-radius:10px; background:var(--surface);
+    padding:13px 15px; box-shadow:var(--shadow); position:relative;
+  }
+  .harvest-card::before{
+    content:""; position:absolute; left:0; top:12px; bottom:12px; width:2px;
+    background:var(--accent); border-radius:2px; opacity:.55;
+  }
+  .harvest-card .harvest-part{
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:11.5px;
+    letter-spacing:.02em; color:var(--accent); margin-bottom:8px; font-weight:600;
+  }
+  .harvest-card .harvest-field{ margin:0 0 8px; }
+  .harvest-card .harvest-field:last-child{ margin-bottom:0; }
+  .harvest-card .field-label{
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:9px;
+    letter-spacing:.1em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:2px;
+  }
+  .harvest-card .field-value{ margin:0; color:var(--ink-soft); }
+
+  .compare-stack{
+    display:flex; flex-direction:column; gap:12px; margin:0 0 18px; padding:0; list-style:none;
+  }
+  .compare-card{
+    border:1px solid var(--rule); border-radius:10px; background:var(--surface);
+    padding:13px 15px; box-shadow:var(--shadow); position:relative;
+  }
+  .compare-card::before{
+    content:""; position:absolute; left:0; top:12px; bottom:12px; width:2px;
+    background:var(--accent); border-radius:2px; opacity:.55;
+  }
+  .compare-card .compare-aspect{
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:11.5px;
+    letter-spacing:.02em; color:var(--accent); margin-bottom:8px; font-weight:600;
+  }
+  .compare-card .compare-cols{
+    display:grid; grid-template-columns:1fr 1fr; gap:14px;
+  }
+  .compare-card .field-label{
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:9px;
+    letter-spacing:.1em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:2px;
+  }
+  .compare-card .field-value{ margin:0; color:var(--ink-soft); }
+  @media (max-width:520px){
+    .compare-card .compare-cols{ grid-template-columns:1fr; gap:8px; }
+  }
+
+  /* ---------- 參考來源 accordion ---------- */
+  .refs-details{ margin:0; }
+  .refs-details summary{
+    cursor:pointer; list-style:none;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .refs-details summary::-webkit-details-marker{ display:none; }
+  .refs-details summary h2{ margin:0; }
+  .refs-toggle{
+    flex:none; font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-faint);
+    border:1px solid var(--rule-strong); border-radius:7px; padding:4px 11px;
+    transition:background .2s ease, color .2s ease;
+  }
+  .refs-details summary:hover .refs-toggle{ background:var(--surface-2); color:var(--ink-soft); }
+  .refs-details[open] .refs-toggle .when-closed{ display:none; }
+  .refs-details:not([open]) .refs-toggle .when-open{ display:none; }
+  .refs-details .chapter-rule{ margin:14px 0 26px; }
+
+  /* ---------- Mini accordion (in-chapter collapsible tables) ---------- */
+  .mini-accordion{
+    border:1px solid var(--rule); border-radius:10px; background:var(--surface);
+    padding:13px 16px; margin:0 0 18px; box-shadow:var(--shadow);
+  }
+  .mini-accordion summary{
+    cursor:pointer; list-style:none;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.03em;
+    color:var(--ink-soft); font-weight:600;
+  }
+  .mini-accordion summary::-webkit-details-marker{ display:none; }
+  .mini-accordion[open] summary{ margin-bottom:14px; }
+  .mini-accordion-body h5{
+    font-size:12px; font-weight:700; margin:0 0 4px; color:var(--ink);
+    font-family:"Noto Sans TC",sans-serif;
+  }
+  .mini-accordion-body .subnote{
+    font-size:11px; color:var(--ink-faint); margin:0 0 10px;
+  }
+  .mini-accordion-body .table-wrap{ margin-bottom:18px; }
+  .mini-accordion-body .table-wrap:last-child{ margin-bottom:0; }
+  .mini-accordion .refs-toggle{ background:var(--surface-2); }
+  .mini-accordion[open] .refs-toggle .when-closed{ display:none; }
+  .mini-accordion:not([open]) .refs-toggle .when-open{ display:none; }
+
+  .table-infer{ color:var(--inference); }
+
+  /* ---------- 導言頁：分頁目錄 ---------- */
+  .page-index{ display:flex; flex-direction:column; gap:8px; margin-top:28px; }
+  .page-index-item{
+    display:flex; align-items:baseline; justify-content:space-between; gap:14px;
+    padding:14px 16px; border:1px solid var(--rule); border-radius:10px;
+    background:var(--surface); text-decoration:none; color:inherit; box-shadow:var(--shadow);
+    transition:box-shadow .18s ease, border-color .18s ease, transform .18s ease;
+  }
+  .page-index-item:hover{ box-shadow:var(--shadow-lg); border-color:var(--accent); transform:translateY(-1px); }
+  .page-index-title{ font-weight:700; color:var(--ink); font-size:13px; flex:none; }
+  .page-index-desc{
+    font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-faint);
+    text-align:right; flex:1 1 auto; min-width:0;
+  }
+
+  @media (max-width: 600px){
+    main{ padding:28px 18px 90px; }
+    .navpanel.open{ max-height:85vh; }
+  }
+</style>
+
+<div class="navwrap">
+  <div class="topbar">
+    <div class="topbar-row">
+      <div class="brand">Reichsstadt Archiv · 1458</div>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navPanel" aria-label="開啟段落選單">
+        <svg class="menu-btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="4" cy="6" r="1.3" fill="currentColor" stroke="none"/>
+          <line x1="9.5" y1="6" x2="20" y2="6"/>
+          <circle cx="4" cy="12" r="1.3" fill="currentColor" stroke="none"/>
+          <line x1="9.5" y1="12" x2="20" y2="12"/>
+          <circle cx="4" cy="18" r="1.3" fill="currentColor" stroke="none"/>
+          <line x1="9.5" y1="18" x2="16" y2="18"/>
+        </svg>
+        <span class="menu-btn-label">段落</span>
+      </button>
+      <button class="theme-toggle" id="themeToggle" aria-label="切換淺色／深色主題" title="切換淺色／深色主題">
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4.2"/>
+          <line x1="12" y1="2" x2="12" y2="4.8"/>
+          <line x1="12" y1="19.2" x2="12" y2="22"/>
+          <line x1="4.2" y1="4.2" x2="6.1" y2="6.1"/>
+          <line x1="17.9" y1="17.9" x2="19.8" y2="19.8"/>
+          <line x1="2" y1="12" x2="4.8" y2="12"/>
+          <line x1="19.2" y1="12" x2="22" y2="12"/>
+          <line x1="4.2" y1="19.8" x2="6.1" y2="17.9"/>
+          <line x1="17.9" y1="6.1" x2="19.8" y2="4.2"/>
+        </svg>
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="pagetabs" id="pagetabs" role="tablist" aria-label="分頁">
+    <button class="pagetab active" data-page="intro" role="tab" aria-selected="true">導言</button>
+    <button class="pagetab" data-page="districts" role="tab" aria-selected="false">紐倫堡城區結構與生活</button>
+    <button class="pagetab" data-page="uneven" role="tab" aria-selected="false">不名譽者考察</button>
+    <button class="pagetab" data-page="climate" role="tab" aria-selected="false">四季氣候</button>
+    <button class="pagetab" data-page="monastery" role="tab" aria-selected="false">修道院與相關人員</button>
+    <button class="pagetab" data-page="food" role="tab" aria-selected="false">飲食</button>
+    <button class="pagetab" data-page="herbs" role="tab" aria-selected="false">草藥、礦石</button>
+  </div>
+  <div class="filterbox-inline" id="filterboxInline" role="group" aria-label="篩選標記">
+    <div class="seg" id="filterSeg">
+      <button data-mode="all" class="active" title="全部顯示"><span class="dot"></span>全部</button>
+      <button data-mode="verified" title="只看已查證"><span class="dot"></span>已查證</button>
+      <button data-mode="inference" title="只看推論"><span class="dot"></span>推論</button>
+    </div>
+  </div>
+  <div class="navpanel" id="navPanel">
+    <div class="navpanel-inner">
+      <nav class="toc" id="toc-intro" data-toc-for="intro">
+      </nav>
+      <nav class="toc" id="toc-uneven" data-toc-for="uneven" hidden>
+        <a href="#ch1">一、不名譽者制度</a>
+        <a href="#ch2">二、流浪樂師的生活</a>
+        <a href="#ch3">三、三地個別考察</a>
+        <a href="#frankfurt" class="sub">— 法蘭克福</a>
+        <a href="#wurzburg" class="sub">— 烏茲堡</a>
+        <a href="#nuremberg" class="sub">— 紐倫堡</a>
+        <a href="#ch4">四、宗教人士的態度</a>
+        <a href="#refs">參考來源</a>
+      </nav>
+      <nav class="toc" id="toc-districts" data-toc-for="districts" hidden>
+        <a href="#d-ch1">一、城市的整體格局</a>
+        <a href="#d-ch2">二、市中心與市場</a>
+        <a href="#d-ch3">三、街區與居民分布</a>
+        <a href="#d-ch4">四、工匠詩人與市民文化</a>
+        <a href="#d-refs">參考來源</a>
+      </nav>
+      <nav class="toc" id="toc-climate" data-toc-for="climate" hidden>
+        <a href="#c-ch1">一、氣候概況</a>
+        <a href="#c-ch2">二、燃料與居所</a>
+        <a href="#c-ch3">三、洗滌與衛生</a>
+      </nav>
+      <nav class="toc" id="toc-monastery" data-toc-for="monastery" hidden>
+        <a href="#m-ch1">一、基本結構</a>
+        <a href="#m-ch2">二、常駐修道院者與職務</a>
+        <a href="#m-ch3">三、異端審判官</a>
+        <a href="#m-refs">參考來源</a>
+      </nav>
+      <nav class="toc" id="toc-food" data-toc-for="food" hidden>
+        <a href="#f-ch1">一、食物保存方式</a>
+        <a href="#f-ch2">二、主食：穀物與麵包</a>
+        <a href="#f-ch3">三、肉類</a>
+        <a href="#f-ch4">四、魚類</a>
+        <a href="#f-ch5">五、乳製品</a>
+        <a href="#f-ch6">六、蔬菜與水果</a>
+        <a href="#f-ch7">七、調味料與香草</a>
+        <a href="#f-ch8">八、飲品</a>
+        <a href="#f-refs">參考來源</a>
+      </nav>
+      <nav class="toc" id="toc-herbs" data-toc-for="herbs" hidden>
+        <a href="#hb-ch1">一、穀物與豆類</a>
+        <a href="#hb-ch2">二、香料與辛香植物</a>
+        <a href="#hb-ch3">三、藥草與花卉圖鑑</a>
+        <a href="#hb-ch4">四、礦石與寶石圖鑑</a>
+        <a href="#hb-ch5">五、附錄1：工作流程</a>
+        <a href="#hb-ch6">六、附錄2：依植物部位的採收時程表</a>
+        <a href="#hb-ch7">七、附錄3：修道院體系與世俗治療者的差異</a>
+        <a href="#hb-ch8">八、附錄4：台詞方向指引</a>
+        <a href="#hb-refs">參考來源</a>
+      </nav>
+    </div>
+  </div>
+</div>
+<div class="backdrop" id="backdrop"></div>
+
+<main>
+  <div class="page" id="page-intro" data-page="intro">
+    <div class="doc-head" id="intro-overview">
+      <div class="eyebrow">Reichsstadt Archiv · 導言</div>
+      <h1 class="title">神聖羅馬帝國考察誌</h1>
+
+      <div class="notice">
+        本資料使用AI幫忙查找、彙整史料與學術文獻整理，再經過人工挑選、確認與排版。<br/>
+        僅作RP參考，如有勘誤處歡迎回報。<br/>
+        標成<b>已查證</b>的段落，來自可交叉驗證的一般史學共識；標記<b>推論／待補強</b>的段落，是順著已查證資訊做的延伸。
+        <ul style="margin:12px 0 0; padding-left:1.2em;">
+          <li>筆記大致聚焦15世紀中葉（1450–1460）</li>
+          <li>生活相關（飲食、娛樂、衣著等）則採用中世紀通則</li>
+        </ul>
+      </div>
+
+      <nav class="page-index" aria-label="分頁目錄">
+        <a class="page-index-item" href="#p-intro">
+          <span class="page-index-title">導言</span>
+          <span class="page-index-desc">研究範圍與標記規則</span>
+        </a>
+        <a class="page-index-item" href="#p-districts">
+          <span class="page-index-title">紐倫堡城區結構與生活</span>
+          <span class="page-index-desc">城區劃分、市集、街區生活</span>
+        </a>
+        <a class="page-index-item" href="#p-uneven">
+          <span class="page-index-title">不名譽者考察</span>
+          <span class="page-index-desc">不名譽者制度與流浪樂師考察</span>
+        </a>
+        <a class="page-index-item" href="#p-climate">
+          <span class="page-index-title">四季氣候</span>
+          <span class="page-index-desc">法蘭肯地區氣候與日常</span>
+        </a>
+        <a class="page-index-item" href="#p-monastery">
+          <span class="page-index-title">修道院與相關人員</span>
+          <span class="page-index-desc">修道院空間結構與相關人員</span>
+        </a>
+        <a class="page-index-item" href="#p-food">
+          <span class="page-index-title">飲食</span>
+          <span class="page-index-desc">食物保存、主食、肉類與飲品</span>
+        </a>
+        <a class="page-index-item" href="#p-herbs">
+          <span class="page-index-title">草藥、礦石</span>
+          <span class="page-index-desc">藥草性質療效、礦石寶石、採集與製劑</span>
+        </a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="page" id="page-uneven" data-page="uneven" hidden>
+    <div class="doc-head" id="overview">
+      <div class="eyebrow">Reichsstadt &amp; Hochstift · 考察筆記</div>
+      <h1 class="title">1458 年神聖羅馬帝國「不名譽者」與流浪樂師考察</h1>
+    </div>
+
+    <section class="chapter" id="ch1">
+      <h2><span class="num">01</span>整體背景：「不名譽者」制度是什麼</h2>
+      <div class="chapter-rule"></div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>「不名譽者」（unehrliche Leute）不是官方訂出的賤民階級，而是一種名譽（Ehre）遭剝奪的社會狀態，
+        卻在法律與行會制度上留下實質痕跡：不名譽者不得出庭作證、不得當原告、不能繼承領地、不准帶武器。
+        這些規矩最早見於 13 世紀的《薩克森之鑑》（Sachsenspiegel），一路沿用進 15 世紀的地方習慣法與城市法規。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p><b>賠償金差別待遇：</b>約 1320 年的海德堡插圖手稿留下一句刺人的規定，樂師與其他「無權者」
+        （rechtlose Leute）若遭傷害，能討回的賠償僅有：</p>
+        <blockquote>在陽光下打加害者投在牆上的影子。</blockquote>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p><b>但並非等同罪犯：</b>薩克森之鑑劃了一條界線：即便是樂師或私生子，這身分本身不等於竊賊或強盜。
+        「不名譽」與「有罪」是兩回事：傷害或殺死一名樂師，仍要按「和平法」（Friedensrecht）論處，
+        儘管樂師自己無權提告。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p><b>行會排除：</b>不名譽者與其子女進不了手工業行會的門，也難與「正經」市民通婚，足見世代翻身困難。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p><b>地域與時間差異極大：</b>哪些職業算「不名譽」、排斥的程度多重，因城因地因時而異，
+        帝國從沒有一份通用清單。</p>
+      </div>
+
+      <p style="margin-top:26px;">常見被歸類為「不名譽」或處境類似的職業，大致可分三群（此分類為現代史學整理，非當時官方分類）：</p>
+      <ul>
+        <li>特定手工業／服務業：牧羊人、磨坊主、塔樓守衛、浴場主／理髮師（Bader）、亞麻織工等；</li>
+        <li>流動維生者：流浪樂師／吟遊詩人（Spielleute）、補鍋匠、貨郎、拾荒者等；</li>
+        <li>涉及污穢、刑罰、死亡的職務：劊子手（Scharfrichter）、剝皮工（Abdecker）、掘墓人、街道清潔工等。</li>
+      </ul>
+      <p>樂師／吟遊詩人在這個光譜中屬於<b>中間偏低</b>的位置：他們不像劊子手、剝皮工那樣被視為「污穢」，
+      但因為「流動、無固定居所、以娛樂維生」而長期被歸入不名譽之列。</p>
+    </section>
+
+    <section class="chapter" id="ch2">
+      <h2><span class="num">02</span>流浪樂師的生活方式與地位流動</h2>
+      <div class="chapter-rule"></div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p><b>生活型態：</b>多數 Spielleute 沒有居所，靠雙腳往返城鎮之間，在市集、婚禮、宮廷宴會、
+        教會慶典上說唱、雜耍，換一頓飯或幾個銅板。
+        出身五花八門，從沒有繼承權的小貴族子弟、逃出修道院的學生、破產工匠之後、走投無路的窮人家孩子，都可能混跡其中。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p><b>法律弱勢但非全然無保障：</b>法律不讓他們告狀、不讓他們作證；但傷害樂師仍屬破壞治安，
+        活在「被鄙視卻受最低限度保護」的夾縫裡。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p><b>13 世紀起的地位轉機：</b>轉機從 13 世紀開始出現：樂師漸漸結成「兄弟會」（Bruderschaft）互助自治，
+        最早可考的是 1288 年維也納聖尼各老兄弟會（Nikolaibruderschaft）。這既是互助組織，
+        也是向城市當局爭取地位的籌碼。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p><b>要脫離「不名譽」，大致有兩條路：</b></p>
+        <ul>
+          <li>少數技藝過人者被宮廷收編，成為固定服侍某位君侯的宮廷樂師（Menestrel），身價遠非街頭賣藝可比；</li>
+          <li>更常見的，是被城市議會正式聘為「城市樂師」（Stadtmusiker／Stadtpfeifer）或「塔樓吹奏手」
+          （Turmbläser），負責報時、示警、市政儀式伴奏，說到底是一份公務差事。</li>
+        </ul>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p><b>15 世紀是關鍵過渡期：</b>
+        城市樂師拿到市民權、向議會宣誓效忠、享有「本地優先」的保護傘（外地樂師想在本城接婚宴生意，
+        得先讓路給本地持照樂師），日子越過越安穩。
+        未被體制收編、仍在路上討生活的樂師，污名沒有消失，反而因為治安法規收緊而更難熬。
+        不少城市開始明令旅店不得收留流浪人口，巴塞爾甚至把他們和其他邊緣人一起圈進科爾山的專門區域，
+        交給獨立法庭管。</p>
+      </div>
+
+      <h4 class="mini-head">黑話：路上人的暗語</h4>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>從 13 世紀起，乞丐、江湖騙子、流浪藝人之間流傳著一套祕語「Rotwelsch」，字面大概是「聽不懂的胡話」的意思。
+        文字紀錄陸續浮出水面：1433／40 年，巴塞爾整理出《Basler Betrügnisse der Gyler》，把行騙手法連同黑話詞彙一併記下，
+        是後來所有黑話詞典的老祖宗；1443 年，維也納的乞丐法令附了一份專門詞彙表；1488 年蘇黎世官員 Gerold Edlibach
+        又收了 59 個詞。這幾個時間點幾乎正好卡在 1458 年前後，算是同一個世代的產物。詞彙裡混著德語、意第緒語、
+        羅姆語借詞——barlen（說話）、Kies（錢）、Roter Hahn（縱火）——不少後來還混進了日常德語。</p>
+      </div>
+
+      <div class="claim inference">
+        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
+        <p>目前查到的早期黑話詞彙表，重心都放在乞丐與騙子的「行話」上，沒能找到專屬樂師的詞彙清單。
+        比較站得住腳的推測是：樂師跟乞丐、庸醫常常同路而行，彼此的黑話多半是共用、混雜的一套系統，
+        而不是各自獨立的「樂師密語」。</p>
+        <p class="remark"><b>備註：</b>樂師說通用的流浪者黑話，會比杜撰「音樂人專屬密語」更符合史實。</p>
+      </div>
+
+      <div class="claim inference">
+        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
+        <p><b>流浪者的自保組織：</b>零星記載提到，流浪樂師、雜耍藝人、補鍋匠一類人也曾集結類似行會、
+        由首領統率的「流浪者聯盟」。也有記載說這類團體後來因牽涉暴力或不法而被城市取締。</p>
+        <p class="remark"><b>備註：</b>因細節模糊，這裡只能當成 15 世紀的普遍風氣來看。</p>
+      </div>
+
+      <details class="mini-accordion">
+        <summary>
+          <span>黑話詞彙表</span>
+          <span class="refs-toggle"><span class="when-closed">展開 ＋</span><span class="when-open">收合 −</span></span>
+        </summary>
+        <div class="mini-accordion-body">
+          <h5>身分代稱</h5>
+          <p class="subnote">稱呼同行不同行騙手法／身分的暗語稱謂。</p>
+          <div class="table-wrap">
+            <table class="compare">
+              <thead>
+                <tr><th>身分稱謂</th><th>偽裝內容</th><th>適用情境</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Grantner</td><td>假裝癲癇發作，口吐白沫、倒地抽搐</td><td>在教堂、市集人多處突然發作，博取同情與施捨</td></tr>
+                <tr><td>Schwigerer</td><td>以馬糞混水塗身，偽裝罹患痲瘋病</td><td>在城門口、市場邊緣裝病乞討，利用人們對痲瘋病的恐懼與憐憫</td></tr>
+                <tr><td>Falkentreger</td><td>假裝曾遭囚禁上鐐銬，手臂纏繃帶</td><td>向路人講述「被冤枉入獄」的故事，索取贖金或施捨</td></tr>
+                <tr><td>Sonnenweger</td><td>假稱曾殺人、需在期限內籌一筆錢贖罪</td><td>向富人或商人索討「贖罪金」，常搭配一名假扮「擔保人」的同夥</td></tr>
+                <tr><td>Sonnenwegerin</td><td>假稱曾為娼妓、如今悔改行乞</td><td>常與 Sonnenweger 搭檔行動，以「懺悔者」身分博取同情</td></tr>
+                <tr><td>Junckfrauwen</td><td>假裝罹患皮膚病（痲瘋、疥癬）</td><td>在慶典、市集場合裝病乞討，以誇張的皮膚偽裝手法（塗抹漿糊、染紅穀粒）引人注目</td></tr>
+                <tr><td>Gutzbetterin</td><td>假裝剛生產、抱著借來或不存在的嬰兒</td><td>躺臥在教堂前，聲稱孩子剛過世或需要撫養費</td></tr>
+                <tr><td>Clamerirer</td><td>假冒朝聖歸來者，佩戴貝殼、徽章等朝聖信物</td><td>講述遠赴羅馬、聖地朝聖的虛構經歷，索取旅途資助</td></tr>
+                <tr><td>Sparfelder</td><td>假裝受凍，裸身或衣衫單薄坐在教堂前發抖</td><td>塗抹刺激性藥草使皮膚泛紅顫抖，營造受凍假象以換取衣物或施捨</td></tr>
+                <tr><td>Radune</td><td>假稱曾是富有商人，因故破產或遭劫</td><td>出示偽造的證明文件，講述商業失敗或遭搶劫的故事，索求資助</td></tr>
+                <tr><td>Wermerin</td><td>假稱受洗猶太人，靠算命／通靈斂財</td><td>向人透露「你已故親人在陰間的狀況」，收取費用</td></tr>
+                <tr><td>Blochart</td><td>假裝先天失明</td><td>靠隨身攜帶、事後販售的兜帽／斗篷等「證物」偽裝行乞經歷</td></tr>
+                <tr><td>Wopper</td><td>假裝被惡魔附身，抽搐發狂、口出瘋言</td><td>在人群面前發作，聲稱需要「還願」或「驅魔費用」</td></tr>
+                <tr><td>Glatten</td><td>假冒神職人員，剃假髮際線</td><td>手持偽造的祈禱書，以「還願」「代禱」名義向信眾募款</td></tr>
+                <tr><td>Burdhart</td><td>假裝手臂受聖安東尼之火（丹毒）侵害</td><td>手插入手套、掛在頸上，聲稱受聖徒懲罰，索求施捨</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h5>通用詞彙表</h5>
+          <p class="subnote">乞討／行騙同夥之間的日常物資交易與分贓對話詞。</p>
+          <div class="table-wrap">
+            <table class="compare">
+              <thead>
+                <tr><th>黑話詞</th><th>意思</th><th>使用情境</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>lem</td><td>麵包</td><td>同夥間討論食物分配</td></tr>
+                <tr><td>joham</td><td>酒</td><td>同夥間討論分贓、飲酒</td></tr>
+                <tr><td>boßhart</td><td>肉</td><td>討論食物</td></tr>
+                <tr><td>leberte</td><td>蛋</td><td>討論食物</td></tr>
+                <tr><td>rübeling</td><td>小豬（偷竊／取得的食材）</td><td>討論偷竊所得</td></tr>
+                <tr><td>breitfüs</td><td>鵝</td><td>討論食物</td></tr>
+                <tr><td>flughart</td><td>雞</td><td>討論食物</td></tr>
+                <tr><td>flösseling／flösling</td><td>魚</td><td>討論食物</td></tr>
+                <tr><td>wenderich</td><td>乳酪</td><td>討論食物</td></tr>
+                <tr><td>senfterich</td><td>床</td><td>討論住宿地點</td></tr>
+                <tr><td>ruschart</td><td>草墊／草袋（睡鋪）</td><td>討論借宿、睡覺地點</td></tr>
+                <tr><td>klabot</td><td>衣服</td><td>討論偷竊或行乞所得衣物</td></tr>
+                <tr><td>gabal</td><td>被捕、關進城市監獄</td><td>警告同夥有人被抓</td></tr>
+                <tr><td>schüder</td><td>城市差役／查緝官員</td><td>警示同夥官府來了，需迴避</td></tr>
+                <tr><td>gatzem</td><td>小孩</td><td>稱呼同行的孩童（常用於行乞道具）</td></tr>
+                <tr><td>glid</td><td>女孩／女僕</td><td>稱呼女性同夥</td></tr>
+                <tr><td>krönnerin</td><td>妻子</td><td>稱呼配偶或女性伴侶</td></tr>
+                <tr><td>lefrantz</td><td>神父</td><td>談論當地神職人員（警戒或利用對象）</td></tr>
+                <tr><td>juonner</td><td>賭徒</td><td>稱呼靠老千維生的同夥</td></tr>
+                <tr><td>bräwer</td><td>乞丐</td><td>泛稱同行</td></tr>
+                <tr><td>bappeller</td><td>騙子</td><td>評論他人行騙手法</td></tr>
+                <tr><td>zigis</td><td>瞎的</td><td>描述偽裝失明的同夥（對應 Blochart 身分）</td></tr>
+                <tr><td>stabüll</td><td>殘廢者</td><td>描述偽裝肢障的同夥</td></tr>
+                <tr><td>barlet</td><td>說（話）</td><td>日常對話動詞</td></tr>
+                <tr><td>büß</td><td>一堆、聚集處</td><td>指稱聚會地點或分贓的一堆物品</td></tr>
+                <tr><td>sonnenbüß</td><td>妓院</td><td>指稱過夜、交易地點</td></tr>
+                <tr><td>glathar</td><td>桌子</td><td>描述場景</td></tr>
+                <tr><td>lechem</td><td>麵包（源自希伯來語）</td><td>討論食物</td></tr>
+                <tr><td>bätling</td><td>蛋</td><td>討論食物</td></tr>
+                <tr><td>mäß</td><td>錢</td><td>討論行乞所得、分贓</td></tr>
+                <tr><td>blaech</td><td>一種硬幣（Batzen）</td><td>描述具體金額</td></tr>
+                <tr><td>fundhart</td><td>光／蠟燭</td><td>描述夜間場景、教堂內裝備</td></tr>
+                <tr><td>quien</td><td>狗</td><td>警示、描述環境（狗會暴露行蹤）</td></tr>
+                <tr><td>kliebiss</td><td>馬</td><td>描述交通工具、逃跑手段</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="remark"><b>備註：</b>資料來源：1450 年，巴塞爾《Die Betrügnisse der Gyler》（騙子伎倆錄）；
+          1475 年，Matthias von Kemnat《編年史》（普法爾茨選帝侯宮廷）；1488 年，Gerold Edlibach 手稿（蘇黎世市議員）。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="chapter" id="ch3">
+      <h2><span class="num">03</span>三地個別考察</h2>
+      <div class="chapter-rule"></div>
+
+      <h3 class="sub-head" id="frankfurt">法蘭克福 Frankfurt am Main <span class="tag-city">Reichsstadt · 博覽會城市</span></h3>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>法蘭克福是帝國自由城市，靠春秋兩季的大博覽會撐起繁華，也是選帝侯選皇帝的傳統會場，1356 年
+        《金璽詔書》定下的規矩。1454 年秋天，君士坦丁堡淪陷（1453 年）的震撼還沒退去，帝國會議齊聚法蘭克福
+        商討「土耳其戰爭援助」（Reichstürkenhilfe），諸侯使節帶著隨員蜂擁而至。這場會議離 1458 年只有四年，
+        大致能想見當時法蘭克福的樣子：人潮擁擠，五湖四海的口音混雜街頭。</p>
+      </div>
+
+      <div class="claim inference">
+        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
+        <p>法蘭克福作為固定舉辦大型博覽會與帝國會議的城市，理應是流浪樂師聚集謀生的熱點。
+        人潮聚集之處，就是賞錢與聽眾所在。這類商貿大城通常也設有較嚴格的旅店管理與治安規範，流浪樂師的活動空間很可能
+        因此受到限制，例如被要求登記或只能在特定區域表演。（推測依據同類城市慣例，
+        法蘭克福當地具體法規尚待查證。）</p>
+      </div>
+
+      <h3 class="sub-head" id="wurzburg">烏茲堡 Würzburg <span class="tag-city">Hochstift · 采邑主教轄區</span></h3>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>烏茲堡的核心身分是采邑主教轄區（Hochstift Würzburg），名義上歸美因茲總主教管，
+        實權卻握在烏茲堡采邑主教（Fürstbischof）手裡，他既是世俗諸侯，也是教會領袖。這種「教會諸侯國」
+        （geistliches Fürstentum）的治理方式，意味著這裡的世俗規矩與教會規矩常常是同一套，
+        甚至出自同一個人之手。</p>
+      </div>
+
+      <div class="claim inference">
+        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
+        <p>由於統治者身兼主教，烏茲堡對「不名譽者」的判定，很可能比一般世俗自由城市更貼近教會的道德立場，
+        對演藝維生者的評價未必寬鬆。另一方面，主教座堂城市慶典與朝聖活動多，樂師的生意在宗教城市充滿矛盾，
+        道德上被質疑、實務上卻離不開。</p>
+        <p class="remark"><b>備註：</b>從其他教會轄區類推而來，烏茲堡本地的直接記載尚未查得。</p>
+      </div>
+
+      <div class="notice" style="margin-top:0;">
+        若想深挖烏茲堡在地史料，可參閱《歷史辭典巴伐利亞》（Historisches Lexikon Bayerns）的
+        「Würzburg, Hochstift: Verwaltung」條目、以及烏茲堡教區史的德文檔案。
+      </div>
+
+      <h3 class="sub-head" id="nuremberg">紐倫堡 Nuremberg <span class="tag-city">Reichsstadt · 樂器製造重鎮</span></h3>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>紐倫堡是帝國自由城市，15 世紀帝國數一數二的商貿與工藝重鎮，行會制度也發展得最成熟。
+        這裡還是樂器製造重鎮，紐榭爾（Neuschel）、施尼澤（Schnitzer）等製琴製管世家都出自紐倫堡，
+        連帶養出一批手藝精湛的樂師。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>更值得一提的是，紐倫堡樂師曾在法蘭克福的「樂師法庭」（Spielleutegericht，樂師行會／兄弟會
+        自組、處理內部糾紛與資格認證的機構）擔任官方性質的職務。能跨城市發揮這種權威，說明到了 15 世紀，
+        至少一部分「組織化」的樂師早就脫離了單純的流浪不名譽者身分，與正經公會成員相差不遠。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>紐倫堡周邊（奧格斯堡、諾德林根等）在 15 世紀已經有了「城市樂師特權」：議會把本地婚宴之類的生意
+        優先保留給有牌照的在地樂師，樂師則向議會宣誓效忠換取穩定收入與地位。這套制度到 1500 年後才全面鋪開，
+        但 15 世紀中葉的紐倫堡等大城已見雛形。</p>
+      </div>
+
+      <div class="claim inference">
+        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
+        <p>不過這份保障只照顧被市府正式收編、發了牌的樂師。仍在紐倫堡城裡城外流浪賣藝、沒拿到執照的人，
+        八成還是歸類於「不名譽」名單。處境和法蘭克福、烏茲堡的普通流浪樂師沒什麼兩樣。</p>
+      </div>
+
+      <h4 class="mini-head">場所細節：城裡的分界線</h4>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>教堂門口就是分界線：1370 年，紐倫堡試著規定乞討只能在教堂正門外進行，教堂裡頭不准討錢。
+        這條規矩顯然沒能一次到位，1518 年市議會還得重申一次。有個具體案例留了下來：一名窮人因為
+        在教堂裡討錢的姿態太不像話，直接被扔進「Lochgefängnis」，一種常見的城市地牢。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>要合法乞討，得先過關：1370 年的乞丐令已經把人分成「有能力工作」與「無能力工作」兩類，
+        只有能證明自己確實有需要的人才准討錢，申請時還得找二到三位街坊作保、由官方代表核實；
+        1478 年進一步要求乞丐得會背《主禱文》《使徒信經》十誡、拿得出告解證明；到 1522 年乾脆發實體證件，
+        一枚要求公開別在身上的黃銅開放式標誌。這套辦法後來還影響了維也納 1442／43 年的乞丐令，
+        算是紐倫堡輸出的治理模式。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>1449 年打仗那陣子，紐倫堡設了「乞丐之父」（pubenvater）一職，配上專門的「乞丐小屋」
+        （pubenhütten），專門收管沒有市民權的傭兵和幫工。</p>
+        <p class="remark"><b>備註：</b>特殊情況，背景是戰時應急，不宜直接套用到承平時期的日常狀態。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>「sterzel」一詞兩用。<br/>
+        （1）遊手好閒、到處遊蕩的乞丐：14 世紀的記錄顯示，被貼上這標籤的人會被判三年內不得靠近城鎮周圍三英里。<br/>
+        （2）15 世紀末的文獻裡，「sterzel」反而是官方派來專門盯乞丐的監督員稱呼。<br/>
+        同一個詞同時指「被盯的人」跟「盯人的人」。
+        紐倫堡的乞丐監督職務，另有資料顯示常由劊子手兼任，兩種不名譽身分疊在同一個人身上。</p>
+      </div>
+
+      <div class="claim inference">
+        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
+        <p>城門：1400 年紐倫堡城牆完工時共有七個出入口，其中五個是主要城門。
+        後世的記載顯示這套系統維持著「主要城門有人看守、其餘夜間關閉」的邏輯，但直接指向 15 世紀當下
+        執行細節（幾點關門、誰站崗）的史料沒能查到，手上查到的具體描述其實來自 19 世紀初文件的回推。
+        城門宵禁的框架大概在 15 世紀已經存在，但別把細節寫死。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>紐倫堡最早的市營妓院文獻紀錄落在 1381 年，地點就在「女子門牆」（Frauentormauer）一帶，
+        正好夾在施皮特勒門（Spittlertor）與染工門（Färbertor）兩座城門之間。到 1470 年代，
+        紐倫堡訂出「普通婦女條例」（Ordnung über die gemeynen weyber），後來還成了南德其他城市
+        抄作業的範本；1481 年進一步禁止院外拉客。最耐人尋味的是，負責監督妓院的「妓院管理者」
+        （Frauenwirt）常常由劊子手或獄卒兼任，與前面提過的乞丐監督官如出一轍。</p>
+      </div>
+
+      <div class="claim inference">
+        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
+        <p><b>市集廣場（Hauptmarkt）：</b>這裡在 15 世紀的定位是工作日例行市集，
+        加上政治、宗教活動中心（市政廳在北邊、聖母教堂在東邊），並沒有查到樂師或雜耍藝人常態聚集表演的紀錄。</p>
+        <p class="remark"><b>備註：</b>「市集廣場＝賣藝熱點」聽起來很合理，但至少在紐倫堡，這個推論目前找不到直接證據。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p><b>聖靈醫院（Heilig-Geist-Spital，1339 年設立）：</b>它的服務對象主要是市民中的老弱病殘與可治癒病患，
+        經費來自地產與捐贈收益，性質上比較接近「市民福利醫院」。並非每間打著濟貧旗號的機構都跟流浪人口有關。</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="ch4">
+      <h2><span class="num">04</span>宗教人士的接納度與教會態度</h2>
+      <div class="chapter-rule"></div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>中世紀教會法的傳統，一路能追溯到更早的教會法彙編與教父時代對「演藝人」（histriones／
+        ioculatores）的討論，長期把職業演藝者、雜耍藝人、樂師看作道德上可疑的一群：這行飯建立在
+        「取悅人、可能招來淫慾或虛榮」之上，居無定所也難被堂區牧靈盯緊，收入更被視為不事生產的不勞而獲。
+        教會史上不乏把這類人擋在正式聖事之外的紀錄——告解赦免、婚配見證都可能被拒——除非他們「悔改改行」。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>中世紀盛期到晚期，宮廷文化與市民文化愈發蓬勃，教會慶典本身反而
+        離不開樂師與演藝人員：彌撒的器樂伴奏、宗教劇／神蹟劇的演出、朝聖路上的歌詠說唱，處處要用到他們。
+        教會一邊譴責、一邊倚重，這種矛盾在 14–15 世紀教會與世俗混治的城市（比如烏茲堡這類主教轄區）格外明顯。</p>
+      </div>
+
+      <div class="claim inference">
+        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
+        <p>常在通俗文章裡被引用的「某位神學家／傳教士某年在某地公開痛罵樂師」這類情節
+        （例如 13 世紀傳教士 Berthold von Regensburg 對樂師的譴責），查證未能在可信來源裡找到具體引文，
+        只確認了這個人真實存在、以講道聞名。若創作上需要「教士講道譴責樂師」橋段，
+        建議當成「符合教會一般立場的合理虛構」來處理。</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="refs">
+      <details class="refs-details">
+        <summary>
+          <h2><span class="num">05</span>參考來源</h2>
+          <span class="refs-toggle"><span class="when-closed">展開 ＋</span><span class="when-open">收合 −</span></span>
+        </summary>
+      <div class="chapter-rule"></div>
+      <ul class="refs">
+        <li><a href="https://de.wikipedia.org/wiki/Unehrlicher_Beruf" target="_blank" rel="noopener">Unehrlicher Beruf – Wikipedia</a></li>
+        <li><a href="https://de.wikipedia.org/wiki/Spielmann" target="_blank" rel="noopener">Spielmann – Wikipedia</a></li>
+        <li><a href="https://www.musikland-sachsenanhalt.de/beitraege/spielleute-im-sachsenspiegel/" target="_blank" rel="noopener">Spielleute im "Sachsenspiegel" » Musikland Sachsen-Anhalt</a></li>
+        <li><a href="http://www.zeno.org/Goetzinger-1885/A/Unehrliche+Leute" target="_blank" rel="noopener">Unehrliche Leute – Zeno.org（Götzinger 1885）</a></li>
+        <li><a href="https://www.mittelalter-lexikon.de/wiki/Spielleute" target="_blank" rel="noopener">Spielleute – Mittelalter-Lexikon</a></li>
+        <li><a href="https://hls-dhs-dss.ch/de/articles/025616/2013-10-03/" target="_blank" rel="noopener">Fahrende – Historisches Lexikon der Schweiz (HLS)</a></li>
+        <li><a href="https://www.alltag-im-mittelalter.de/fahrende-im-mittelalter/" target="_blank" rel="noopener">Fahrende im Mittelalter – Alltag im Mittelalter</a></li>
+        <li><a href="https://www.leben-im-mittelalter.net/alltag-im-mittelalter/arbeit-und-berufe/unehrliche-berufe.html" target="_blank" rel="noopener">Unehrliche Berufe – Leben im Mittelalter</a></li>
+        <li><a href="https://www.historisches-lexikon-bayerns.de/Lexikon/Stadtmusiker_(Sp%C3%A4tmittelalter/Fr%C3%BChe_Neuzeit)" target="_blank" rel="noopener">Stadtmusiker (Spätmittelalter/Frühe Neuzeit) – Historisches Lexikon Bayerns</a></li>
+        <li><a href="https://www.historisches-lexikon-bayerns.de/Lexikon/W%C3%BCrzburg,_Hochstift:_Verwaltung" target="_blank" rel="noopener">Würzburg, Hochstift: Verwaltung – Historisches Lexikon Bayerns</a></li>
+        <li><a href="https://de.wikipedia.org/wiki/Hochstift_W%C3%BCrzburg" target="_blank" rel="noopener">Hochstift Würzburg – Wikipedia</a></li>
+        <li><a href="https://de.wikipedia.org/wiki/Frankfurter_Kurf%C3%BCrstentag" target="_blank" rel="noopener">Frankfurter Kurfürstentag – Wikipedia</a></li>
+        <li><a href="https://de.wikipedia.org/wiki/Reichst%C3%BCrkenhilfe" target="_blank" rel="noopener">Reichstürkenhilfe – Wikipedia<span class="note">含1454年法蘭克福帝國會議相關脈絡</span></a></li>
+        <li><a href="https://de.wikipedia.org/wiki/Berthold_von_Regensburg" target="_blank" rel="noopener">Berthold von Regensburg – Wikipedia</a></li>
+        <li><a href="https://www.mittelalter-lexikon.de/wiki/Rotwelsch" target="_blank" rel="noopener">Rotwelsch – Mittelalter-Lexikon</a></li>
+        <li><a href="https://hls-dhs-dss.ch/de/articles/011301/" target="_blank" rel="noopener">Rotwelsch – Historisches Lexikon der Schweiz (HLS)<span class="note">含《Basler Betrügnisse der Gyler》(1433/40) 相關脈絡</span></a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Liber_Vagatorum" target="_blank" rel="noopener">Liber Vagatorum – Wikipedia</a></li>
+        <li><a href="https://www.fwb-online.de/lemma/sterzel.s.0m" target="_blank" rel="noopener">sterzel – Frühneuhochdeutsches Wörterbuch</a></li>
+        <li><a href="https://www.mittelalter-lexikon.de/wiki/Bettlerordnungen" target="_blank" rel="noopener">Bettlerordnungen – Mittelalter-Lexikon</a></li>
+        <li><a href="https://www.regionalgeschichte.net/fileadmin/Superportal/Bibliothek/Autoren/SchibertErnst/03-MV8-Schubert.pdf" target="_blank" rel="noopener">Ernst Schubert – Duldung, Diskriminierung und Verfolgung（PDF）<span class="note">紐倫堡乞討／教堂禁令／乞丐小屋等案例出處</span></a></li>
+        <li><a href="https://epub.jku.at/obvulihs/download/pdf/8281983?originalFilename=true" target="_blank" rel="noopener">Starke Bettler/innen und würdige Arme（碩士論文，PDF）<span class="note">紐倫堡乞丐標誌制度演變出處</span></a></li>
+        <li><a href="https://de.wikipedia.org/wiki/Stadtmauer_(N%C3%BCrnberg)" target="_blank" rel="noopener">Stadtmauer (Nürnberg) – Wikipedia</a></li>
+        <li><a href="https://de.wikipedia.org/wiki/N%C3%BCrnberger_Rotlichtviertel" target="_blank" rel="noopener">Nürnberger Rotlichtviertel – Wikipedia</a></li>
+        <li><a href="https://www.bayerische-staatszeitung.de/staatszeitung/unser-bayern/detailansicht-unser-bayern/artikel/unzuechtiges-gewerbe.html" target="_blank" rel="noopener">Unzüchtiges Gewerbe – Bayerische Staatszeitung<span class="note">1470年代「普通婦女條例」與Frauenwirt兼職劊子手的出處</span></a></li>
+        <li><a href="https://de.wikipedia.org/wiki/Hauptmarkt_(N%C3%BCrnberg)" target="_blank" rel="noopener">Hauptmarkt (Nürnberg) – Wikipedia</a></li>
+        <li><a href="https://de.wikipedia.org/wiki/Heilig-Geist-Spital_(N%C3%BCrnberg)" target="_blank" rel="noopener">Heilig-Geist-Spital (Nürnberg) – Wikipedia</a></li>
+      </ul>
+      </details>
+    </section>
+
+    <div class="colophon">
+      本筆記來源公開網路二手資料（線上百科、歷史辭典條目、通俗史學文章與少量學術論文節錄），無一手檔案或學術專著全文。
+    </div>
+  </div>
+
+  <div class="page" id="page-districts" data-page="districts" hidden>
+    <div class="doc-head" id="districts-overview">
+      <div class="eyebrow">Reichsstadt Nürnberg · 城區考察</div>
+      <h1 class="title">紐倫堡城區結構與生活</h1>
+
+      <div class="notice">
+        本頁聚焦紐倫堡的城區劃分、市集格局與街區生活樣貌，時間帶大致對齊 1450–1460 年代。
+        <!-- 暫時隱藏：視覺化地圖／圖解仍待後續設計補上，目前先以文字整理呈現。 -->
+      </div>
+    </div>
+
+    <div class="map-placeholder" hidden>
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 3v18M3 12h18M6 6l12 12M18 6L6 18"/>
+      </svg>
+      地圖／圖解製作中<br/>之後會補上紐倫堡城牆、城門、街區分界等視覺內容
+    </div>
+
+    <section class="chapter" id="d-ch1">
+      <h2><span class="num">01</span>城市的整體格局</h2>
+      <div class="chapter-rule"></div>
+
+      <p>紐倫堡座落在佩格尼茨河（Pegnitz）兩岸，城市呈菱形，依地勢由北往南逐漸下降。</p>
+      <ul>
+        <li><b>北岸・賽巴德區</b>（Sebalder Stadt）：地勢較高，城堡（Kaiserburg）所在，因主教堂 St. Sebald 得名。</li>
+        <li><b>南岸・羅倫茲區</b>（Lorenzer Stadt）：地勢較平緩，因主教堂 St. Lorenz 得名。</li>
+      </ul>
+      <p>兩教區以河為界，是全城最基本的地理分野，住在城裡的人多半會用「北岸」「南岸」來定位自己屬於哪一邊。</p>
+
+      <h4 class="mini-head">行政與治安上的更細劃分</h4>
+      <ul>
+        <li>城牆內側共分八個「城區」（Stadtviertel），賽巴德側與羅倫茲側各四個。</li>
+        <li>每個城區再往下分成十到二十個更小的「巷長區」（Gassenhauptmannschaften）。</li>
+        <li>每個城區由兩名「城區長」（Viertelmeister）負責，職掌涵蓋防禦、治安、消防與徵稅。</li>
+      </ul>
+      <p>對住在城裡的人來說，「自己屬於哪個巷長區」不是抽象的行政名詞，而是實際上收稅、防火巡查會找上門的單位。</p>
+
+      <div class="plain-card">
+        <p><b>社會結構備註：</b>紐倫堡沒有行會。工匠即使手藝精湛、財力雄厚，在政治參與上也和一般市民沒有太大差別。</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="d-ch2">
+      <h2><span class="num">02</span>市中心與市場</h2>
+      <div class="chapter-rule"></div>
+
+      <p>城市正中央是主市集廣場（Hauptmarkt，當時也叫 Grüner Markt 或 Großer Markt），廣場旁是聖母教堂（Frauenkirche）。</p>
+
+      <h4 class="mini-head">主市集內部的分區</h4>
+      <ul>
+        <li>聖母教堂到肉橋（Fleischbrücke）之間：「Herrenmarkt」（貴人市），大宗商人交易之地。</li>
+        <li>南側：布匹攤位聚集的長廊。</li>
+        <li>北側：鹽商的地盤。</li>
+        <li>另有小牛市、魚市、葡萄市、麵粉與鵝市等各自獨立的區塊。</li>
+      </ul>
+
+      <h4 class="mini-head">主市集之外的專門市場</h4>
+      <p>多分布於賽巴德側，設立時間早於主市集：</p>
+      <ul>
+        <li>奶市</li>
+        <li>酒市</li>
+        <li>乾草市</li>
+        <li>鹽市</li>
+      </ul>
+
+      <div class="plain-card">
+        <p><b>固定販售規矩，可作為市集常識：</b></p>
+        <ul style="margin-bottom:0;">
+          <li>紐倫堡的招牌香腸依規定只能在肉橋旁的肉品交易所製作與販售。</li>
+          <li>麵包每週四、六早上在固定的斜攤上賣。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="d-ch3">
+      <h2><span class="num">03</span>街區與居民分布</h2>
+      <div class="chapter-rule"></div>
+
+      <h4 class="mini-head">Am Ölberg（城堡下的工匠街）</h4>
+      <p>城堡下一整片老聚落從十一世紀起就是城堡工匠、僕役與小販的落腳地。</p>
+      <ul>
+        <li>半木構造建築（Fachwerkhaus）</li>
+        <li>通常有二至四層，一樓手作坊或店面、二樓以上是居住空間（主人與聘來的助手），閣樓（存放貨物）。有的含半地下室，用於存儲食材。</li>
+        <li>鄰居大多是同業或彼此認識的工匠。</li>
+      </ul>
+
+      <h4 class="mini-head">Weißgerbergasse（製革匠街）</h4>
+      <p>這條靠近佩格尼茨河的街道自中世紀起就是製革匠聚集地，因為製革需要大量用水，加上氣味重、容易引起鄰居抱怨，所以被安排在靠河、靠城市邊緣的位置。
+      附近的 Irrerstraße也是同類行業聚集之處。</p>
+
+      <h4 class="mini-head">Tucherstraße 一帶（金屬工匠）</h4>
+      <p>有學術研究指出Tucherstraße一帶早在十五世紀就住著不少從事黃銅加工的工匠（Rotschmiede）。紐倫堡當時是歐洲數一數二的黃銅工業重鎮，也是唯一設有黃銅匠行會、並嚴格限制師傅外流的城市。從事金屬加工通常家族世代住在這附近。</p>
+
+      <h4 class="mini-head">貴族聚居的街區</h4>
+      <p>賽巴德側，特別是靠近城堡的埃吉登區（Egidienviertel），傳統上被認為是比較尊貴的居住區，聖賽巴德教堂也是貴族家族辦婚喪與捐獻的首選教堂。</p>
+      <p>十五世紀有數個新家族躋身貴族階層，但同時期只有一個工匠家族成功晉升。
+      也就是說，貴族圈子雖然不是完全封閉，但工匠想靠財富或成就向上，機會非常有限。</p>
+
+      <h4 class="mini-head">城堡周邊</h4>
+      <ul>
+        <li>城伯城堡在1420年被摧毀，1427年城市買下廢墟連同周邊土地，城堡自此完全併入城市防禦體系。</li>
+        <li>當時的皇帝（腓特烈三世，在位期間涵蓋整個1450到60年代）偶爾會駐留城堡，但實際上更常住在城裡貴族的宅邸。</li>
+        <li>市政廳自十四世紀中葉起已取代城堡成為城市集會的場所。</li>
+      </ul>
+      <p>對一般市民來說，城堡更像是軍事防禦設施與偶爾出現的皇帝行館，不是日常政治生活的中心。</p>
+    </section>
+
+    <section class="chapter" id="d-ch4">
+      <h2><span class="num">04</span>工匠詩人與市民文化</h2>
+      <div class="chapter-rule"></div>
+
+      <p>1450到60年代的紐倫堡還沒有正式的「名歌手」（Meistersinger）組織或行會，有紀錄可考的組織化歌唱學校要到一四九六年才出現。
+      這段期間活躍的，是一批各自獨立、以正職工匠身分業餘寫詩唱歌的人。這些人沒有分級制度、沒有守護聖人，單純是有正職、業餘寫作的市民。</p>
+
+      <h4 class="mini-head">工匠詩人 vs 江湖藝人（Spielleute）：兩種完全不同的身分</h4>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead>
+            <tr><th></th><th>工匠詩人</th><th>江湖藝人（Spielleute）</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>社會分類</td><td>有正職的正經市民</td><td>「不名譽者」（unehrliche Leute）</td></tr>
+            <tr><td>行會／公職</td><td>受行會或市議會承認</td><td>不能加入行會、不能任公職或作證</td></tr>
+            <tr><td>收入來源</td><td>本業維生，寫詩唱歌是業餘活動</td><td>靠四處遊走賣藝維生</td></tr>
+            <tr><td>社會地位</td><td>不受寫詩唱歌影響</td><td>接近社會邊緣人</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>一個角色如果是工匠出身，即使私下寫詩唱歌，也不會因此被當成不名譽者；但如果是靠賣藝維生的流浪藝人，
+      則社會地位會明顯偏低，一般市民會對其保持距離。</p>
+    </section>
+
+    <section class="chapter" id="d-refs">
+      <details class="refs-details">
+        <summary>
+          <h2><span class="num">05</span>參考來源</h2>
+          <span class="refs-toggle"><span class="when-closed">展開 ＋</span><span class="when-open">收合 −</span></span>
+        </summary>
+      <div class="chapter-rule"></div>
+      <ul class="refs">
+        <li>Historisches Lexikon Bayerns：〈Meistersinger〉〈Nürnberg, Reichsstadt: Politische und soziale Entwicklung〉〈Nürnberger Patrizier〉〈Judenverfolgungen (Spätmittelalter)〉</li>
+        <li>紐倫堡市統計局（nuernberg.de）：〈Stadtviertel von 1630〉</li>
+        <li>Endres Tucher，《Baumeisterbuch der Stadt Nürnberg》（約1464–75年）</li>
+        <li>Wikipedia（德文版）：〈Sebald (Nürnberg)〉〈Lorenz (Nürnberg)〉〈Stadtmauer (Nürnberg)〉〈Hauptmarkt (Nürnberg)〉〈Handwerkerhäuschen〉〈Reichsstadt Nürnberg〉</li>
+        <li>Tacke, Andreas / Geis, Ulrike，〈Werkstattproduktion eines Rotschmieds in Nürnberg〉（2011年）</li>
+        <li>bavarikon：《Hans Folz, Meisterlieder》手稿描述</li>
+        <li>Literaturportal Bayern：〈Hans Rosenplüt〉</li>
+      </ul>
+      </details>
+    </section>
+
+    <div class="colophon">
+      本筆記來源公開網路二手資料（線上百科、歷史辭典條目、通俗史學文章與少量學術論文節錄），無一手檔案或學術專著全文。
+    </div>
+  </div>
+
+  <div class="page" id="page-climate" data-page="climate" hidden>
+    <div class="doc-head" id="climate-overview">
+      <div class="eyebrow">Franken · 氣候與日常</div>
+      <h1 class="title">四季氣候</h1>
+
+      <div class="notice">
+        本頁聚焦法蘭肯地區（含紐倫堡）1458 年前後的氣候概況，以及氣候如何牽動燃料、洗滌等日常生活細節。
+      </div>
+    </div>
+
+    <section class="chapter" id="c-ch1">
+      <h2><span class="num">01</span>氣候概況</h2>
+      <div class="chapter-rule"></div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>紐倫堡所在的法蘭肯地區，自1451年起是整個北歐與中歐十五世紀最寒冷的十年之一，
+        冬季酷寒、夏季偏濕，季節反差極為明顯。</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="compare">
+          <thead>
+            <tr><th>季節</th><th>概況</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>春（3–5月）</td><td>回暖延遲，偶有倒春寒，播種時機難以掌握</td></tr>
+            <tr><td>夏（6–8月）</td><td>氣溫明顯偏冷，生長季縮短</td></tr>
+            <tr><td>秋（9–11月）</td><td>收成提早結束，糧價開始浮動</td></tr>
+            <tr><td>冬（12–2月）</td><td>整體轉冷、波動劇烈，部分年份嚴寒</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter" id="c-ch2">
+      <h2><span class="num">02</span>燃料與居所</h2>
+      <div class="chapter-rule"></div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>城內建築多為石牆石地結構，保暖不易，壁爐是家戶生活的中心。因效率有限，需消耗大量木柴；
+        且木材屬於受管制資源，建材用木不得挪作燃料使用。</p>
+        <p class="remark"><b>備註：</b>與烘焙息息相關的烤爐，於飲食篇介紹。</p>
+      </div>
+
+      <div class="claim inference">
+        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
+        <p>寒冬年份柴火需求提前上升，消耗量增加，木柴供應相對吃重。</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="c-ch3">
+      <h2><span class="num">03</span>洗滌與衛生</h2>
+      <div class="chapter-rule"></div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>洗衣工作常間隔數週甚至數月才進行一次大規模洗滌，一般家庭會蓄積待洗衣物至固定時機統一處理。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>城內與近郊的洗滌工作多於河邊、公共水源或洗衣場進行，兼具社交功能，流通消息與閒談。</p>
+      </div>
+
+      <div class="claim inference">
+        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
+        <p>嚴冬時節河面結冰，將直接影響洗滌工作的進行時機。</p>
+      </div>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>洗滌方式以「鹼液」（木灰混合水，有時加入尿液以增強去污漂白效果）為主，
+        富裕人家另使用軟皂（灰鹼混合動物油脂）。</p>
+      </div>
+    </section>
+
+    <div class="colophon">
+      本筆記來源公開網路二手資料（線上百科、歷史辭典條目、通俗史學文章與少量學術論文節錄），無一手檔案或學術專著全文。
+    </div>
+  </div>
+
+  <div class="page" id="page-monastery" data-page="monastery" hidden>
+    <div class="doc-head" id="monastery-overview">
+      <div class="eyebrow">Kloster · 建築與人員</div>
+      <h1 class="title">修道院與相關人員</h1>
+
+      <div class="notice">
+        本頁整理修道院的空間結構、常駐人員的工作地點，以及異端審判官與托缽修會的運作方式。
+      </div>
+    </div>
+
+    <section class="chapter" id="m-ch1">
+      <h2><span class="num">01</span>基本結構</h2>
+      <div class="chapter-rule"></div>
+
+      <p>主要參考9世紀的<a href="https://en.wikipedia.org/wiki/Plan_of_Saint_Gall" target="_blank" rel="noopener">聖加侖平面圖</a></p>
+
+      <h4 class="mini-head">核心區：教堂與迴廊</h4>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>設施</th><th>功能</th></tr></thead>
+          <tbody>
+            <tr><td>大教堂(Abbey Church)</td><td>拉丁十字型主體建築，兩端各有圓形後殿;地下設聖徒墓穴</td></tr>
+            <tr><td>迴廊(Cloister)</td><td>方形庭院，僧侶日常生活動線核心，體現封閉內省的修道精神</td></tr>
+            <tr><td>抄寫室(Scriptorium)</td><td>下層抄經、上層藏書，15世紀部分修道院對外承接商業抄寫訂單</td></tr>
+            <tr><td>聖器室</td><td>存放禮拜用具與聖袍</td></tr>
+            <tr><td>會議廳(Chapter House)</td><td>僧侶每日集會、討論院務之處</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini-head">生活機能區</h4>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>設施</th><th>功能</th></tr></thead>
+          <tbody>
+            <tr><td>餐廳(Refectorium)</td><td>集體用餐場所</td></tr>
+            <tr><td>宿舍(Dormitorium)</td><td>通常設於教堂正上方，便於半夜起身參加夜禱</td></tr>
+            <tr><td>廚房、烘焙房</td><td>日常飲食後勤</td></tr>
+            <tr><td>釀酒坊(Brewery)/酒窖</td><td>啤酒與葡萄酒生產、儲藏(部分修道院15世紀將舊有空間改建為專業酒窖)</td></tr>
+            <tr><td>磨坊(Mill)</td><td>磨製穀物，亦對外提供服務收取磨坊費</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini-head">醫療與弱勢照護區</h4>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>設施</th><th>功能</th></tr></thead>
+          <tbody>
+            <tr><td>藥草園(Herb Garden)</td><td>栽培醫療與烹飪用藥草，具體種植清單多為9世紀史料<span class="table-infer">〔推論：15世紀是否維持相同植物配置尚待查證〕</span></td></tr>
+            <tr><td>醫師之家、藥房</td><td>修道院醫療體系核心</td></tr>
+            <tr><td>放血房</td><td>中世紀常見放血療法專屬空間</td></tr>
+            <tr><td>醫務室、新入會修士宿舍</td><td>與主迴廊區隔開，獨立照護</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini-head">農業生產區</h4>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>設施</th><th>功能</th></tr></thead>
+          <tbody>
+            <tr><td>菜園、果園(常兼作墓園)</td><td>蔬果自給</td></tr>
+            <tr><td>穀倉</td><td>穀物儲存，穀物是什一稅核心徵收作物</td></tr>
+            <tr><td>牲畜欄舍</td><td>羊、山羊、牛、豬、馬分區飼養，另設鵝舍及家禽場</td></tr>
+            <tr><td>魚塘(Teichwirtschaft)</td><td>1350–1500年間為魚塘養殖高峰期，直接對應本手冊時代背景;鯉魚為主要魚種，供應約100天齋戒日所需</td></tr>
+            <tr><td>葡萄園</td><td>部分修道院(如萊茵、摩澤爾、多瑙河流域)以葡萄酒為主要經濟命脈</td></tr>
+            <tr><td>啤酒花園(Hopfengarten)</td><td>供應釀啤酒原料</td></tr>
+            <tr><td>工匠工坊</td><td>製桶、車工等手工業，緊鄰農業區以便加工</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini-head">對外服務區</h4>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>設施</th><th>功能</th></tr></thead>
+          <tbody>
+            <tr><td>賓客之家、朝聖者旅舍</td><td>接待旅人、朝聖者、貴賓</td></tr>
+            <tr><td>學校、校長室</td><td>教育功能</td></tr>
+            <tr><td>院長之家</td><td>獨立設置，象徵院長特殊地位</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter" id="m-ch2">
+      <h2><span class="num">02</span>常駐修道院者與職務</h2>
+      <div class="chapter-rule"></div>
+
+      <ul class="role-grid">
+        <li class="role-card"><span class="role-name">抄寫僧/書記官(Schreiber)</span><p class="role-desc">抄寫室固定人員，負責典籍謄抄。15世紀部分修道院對外承接付費抄寫業務</p></li>
+        <li class="role-card"><span class="role-name">公證人(Notar/Notarius)</span><p class="role-desc">負責修道院產權文書、租約、買賣契約。15世紀上半葉起，教士書記逐漸被世俗書記取代</p></li>
+        <li class="role-card"><span class="role-name">修道院內部行政人員(如莊園總管)</span><p class="role-desc">管理莊園農場(Grangien)、什一稅收取、帳冊記錄</p></li>
+        <li class="role-card"><span class="role-name">醫師</span><p class="role-desc">駐於藥房、醫務室區域</p></li>
+        <li class="role-card"><span class="role-name">釀酒師、磨坊工、鐵匠等技術工</span><p class="role-desc">農業畜牧、日常庶務（膳食洗衣、對外接待等）。原由輔理修士(Laienbruder)擔任，15世紀漸由雇傭勞工取代</p></li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="m-ch3">
+      <h2><span class="num">03</span>異端審判官</h2>
+      <div class="chapter-rule"></div>
+
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>項目</th><th>內容</th></tr></thead>
+          <tbody>
+            <tr><td>所屬修會</td><td>多為道明會(Dominikaner)、少數為方濟會(Franziskaner)</td></tr>
+            <tr><td>修會類型</td><td>托缽修會(Bettelorden)——與本篤會、西多會等傳統修道院修會本質不同</td></tr>
+            <tr><td>授權來源</td><td>教宗額我略九世於1231年任命道明會、方濟會為「異端審判官」</td></tr>
+            <tr><td>工作模式</td><td>少常駐固定地點，巡迴各城鎮，並於市集廣場公開審理</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini-head">關鍵差異：托缽修會 vs. 傳統修道院修會</h4>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>面向</th><th>傳統修道院修會(本篤會、西多會)</th><th>托缽修會(道明會、方濟會)</th></tr></thead>
+          <tbody>
+            <tr><td>居住型態</td><td>鄉間封閉式修道院(Kloster)，終身不出</td><td>城市會院(Konvent)，經常外出巡迴</td></tr>
+            <tr><td>生活模式</td><td>祈禱+勞動+封閉內省</td><td>流浪傳教+公開審判+城市佈道</td></tr>
+            <tr><td>建築邏輯</td><td>對應本手冊第一節之聖加侖式配置</td><td>建築配置與本手冊第一節不完全相同，城市會院型態<span class="table-infer">〔推論：具體差異待補充研究〕</span></td></tr>
+            <tr><td>異端審判官出現機率</td><td>低(僅特殊情況造訪)</td><td>高(此為其本職)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter" id="m-refs">
+      <details class="refs-details">
+        <summary>
+          <h2><span class="num">04</span>參考來源</h2>
+          <span class="refs-toggle"><span class="when-closed">展開 ＋</span><span class="when-open">收合 −</span></span>
+        </summary>
+      <div class="chapter-rule"></div>
+      <ul class="refs">
+        <li>Historisches Lexikon Bayerns，「Weinbau in Franken」「Dreifelderwirtschaft」「Kanzlei- und Urkundenwesen (Hoch- und Spätmittelalter)」</li>
+        <li>Katholische Akademie in Bayern，Andreas Otto Weber，「Klösterlicher Weinbau im mittelalterlichen Herzogtum Bayern」</li>
+        <li>regionalgeschichte.net，「Nah- und Fernbesitz von Weinbergen altbayerischer Klöster im Mittelalter」「Kloster Himmerod： Besitz- und Wirtschaftsgeschichte」</li>
+        <li>KuLaDig(北萊茵-威斯特法倫州文化景觀資料庫)，「Zisterzienserkloster Eberbach」「Spuren des Weinbaus in der Klosterlandschaft Eberbach」「Weiträumiger Klosterbesitz der Zisterzienserabtei Altenberg」</li>
+        <li>Mittelalter-Lexikon，「Laienbrüder」「Konversen」「Klostergarten」「Teichwirtschaft」「Bursfelder Reform-Kongregation」</li>
+        <li>Historisches Lexikon der Schweiz(HLS)，「Zisterzienser」「Getreidebau」「Zehnt」</li>
+        <li>SEHEPUNKTE，書評「Konversen im Mittelalter」</li>
+        <li>Kloster Bursfelde官方歷史頁面;historisches-museum-hellental.de</li>
+        <li>Wikipedia德文版，「Elbling (Rebsorte)」「Riesling」「Rheingau (Weinbaugebiet)」「Kloster Eberbach」「Schreibschule」</li>
+        <li>LEO-BW，「Notarielle Urkunden」</li>
+        <li>Planet Wissen，「Mittelalter： Inquisition」;道明會官方PDF「Dominikaner und mittelalterliche Inquisition」</li>
+        <li>Die Welt der Habsburger，「Fisch auf dem Tisch」「KlosterWirtschaft」</li>
+        <li>「Das kulinarische Erbe der Zisterzienser in Mitteleuropa」研究手冊</li>
+      </ul>
+      </details>
+    </section>
+
+    <div class="colophon">
+      本筆記來源公開網路二手資料（線上百科、歷史辭典條目、通俗史學文章與少量學術論文節錄），無一手檔案或學術專著全文。
+    </div>
+  </div>
+
+  <div class="page" id="page-food" data-page="food" hidden>
+    <div class="doc-head" id="food-overview">
+      <div class="eyebrow">Nahrung &amp; Trank · 日常飲食</div>
+      <h1 class="title">飲食</h1>
+
+      <div class="notice">
+        本頁整理食物保存方式、主食、肉類、魚類、乳製品、蔬果、調味料與飲品。
+      </div>
+    </div>
+
+    <section class="chapter" id="f-ch1">
+      <h2><span class="num">01</span>食物保存方式</h2>
+      <div class="chapter-rule"></div>
+
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>技術</th><th>適用食材</th><th>說明</th></tr></thead>
+          <tbody>
+            <tr><td>鹽漬(Salzen/Pökeln)</td><td>肉類、魚類(鯡魚、鱈魚)</td><td>因齋戒日禁肉，鹽漬魚需求量極大；15世紀前期波羅的海沿岸年產約2.5萬噸鹽漬鯡魚，耗鹽5千噸。</td></tr>
+            <tr><td>煙燻(Räuchern)</td><td>肥肉、油脂魚類、香腸</td><td>常與鹽漬並用，延長保存期。</td></tr>
+            <tr><td>風乾(Simple Drying)</td><td>水果</td><td>以自然風乾或爐烤脫水，是最簡便的保存法。</td></tr>
+            <tr><td>乳酸發酵</td><td>高麗菜(德國酸菜)</td><td>冬季重要蔬菜與維生素C來源，可整季食用。</td></tr>
+            <tr><td>醋漬/酒漬</td><td>肉類(短期保存)</td><td>適合短時間內延長食用期限。</td></tr>
+            <tr><td>地窖/地下室低溫儲存</td><td>根莖類蔬菜、醃製品</td><td>鄉村用地下儲藏室，城市用建築地下室。</td></tr>
+            <tr><td>屠宰季節安排</td><td>豬</td><td>傳統於秋季(約11月)屠宰，豬隻先以橡實育肥，肉品隨即鹽醃煙燻備冬。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini-head">補充資料</h4>
+      <ul>
+        <li>為了確保糧食足夠過冬，鹽漬為大宗，因此鹽佔有極大重要性；其中海鹽因便宜最常使用，但消費者更偏好品質優良的泉鹽</li>
+        <li>某些特殊肉或魚也採用鹽水保存（類似罐頭肉品）</li>
+        <li>比起大規模運送牛羊，更多是以鹽漬加工品形態送至市民手中</li>
+        <li>水果乾通常切薄片後放在木架上直曬陽光，抑或放在室內通風處</li>
+        <li>胡蘿蔔、蘿蔔、香菜根等根莖類可以久放，因此可以一次採數週份量置於乾燥陰涼處</li>
+        <li>也有油封做法，牛油、豬油或堅果油</li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="f-ch2">
+      <h2><span class="num">02</span>主食：穀物與麵包</h2>
+      <div class="chapter-rule"></div>
+
+      <ul>
+        <li>主要：黑麥、二粒小麥、大麥、燕麥、小米。</li>
+        <li>白麵包(小麥製)僅供貴族與富裕城市階層食用，有的貴族追求品質，甚至加價過篩；一般民眾食用粗磨黑麥或大麥製的深色麵包。</li>
+        <li>一般家庭收入可能高達四分之三用於購買穀物，穀物供應直接關係生存。</li>
+        <li>Pottage／Porridge，餬（近似於粥）。將穀物以水或高湯中煮到黏稠，通常搭配豆類食用補充營養，為窮人常見溫飽主食</li>
+        <li>若將穀物以奶類燉煮，並加入蜂蜜或糖，則成為近似米布丁的甜食</li>
+        <li>烤爐並非家家戶戶都有，體型巨大且維護價格不菲。大型設施（修道院、城堡、城市公設）有專用烤爐，因此會租給民家使用。</li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="f-ch3">
+      <h2><span class="num">03</span>肉類</h2>
+      <div class="chapter-rule"></div>
+
+      <h4 class="mini-head">依社會階層區分</h4>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>階層</th><th>常見肉類</th></tr></thead>
+          <tbody>
+            <tr><td>貴族/上層</td><td>鹿肉、野豬、鶴、天鵝、蒼鷺、孔雀等野味珍禽，精心裝飾呈盤</td></tr>
+            <tr><td>城市中產</td><td>雞肉、豬肉、牛肉、羊肉</td></tr>
+            <tr><td>下層民眾</td><td>內臟、腳、嘴、喉嚨等邊角部位為主</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>一般中世紀概估：牛肉約佔肉類消費40–60%、豬肉18–35%、羊肉/山羊肉與家禽各約4–18%（此為跨世紀通論數字）</p>
+    </section>
+
+    <section class="chapter" id="f-ch4">
+      <h2><span class="num">04</span>魚類</h2>
+      <div class="chapter-rule"></div>
+
+      <ul>
+        <li>淡水魚：鯉魚、鱸魚、鱒魚</li>
+        <li>鹽漬海魚：鯡魚、鱈魚</li>
+      </ul>
+      <h4 class="mini-head">補充資料</h4>
+      <ul>
+        <li>為求保鮮，魚販追求快速運往內陸</li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="f-ch5">
+      <h2><span class="num">05</span>乳製品</h2>
+      <div class="chapter-rule"></div>
+
+      <ul>
+        <li>地域差異：歐洲北部(含德語區大部)以牛奶為主，南部以羊奶、山羊奶為主。</li>
+        <li>鮮奶因不易保存，平民多將牛奶加工成凝乳、乳酪，或做為湯品、粥品、麵包蘸料的添加物，較少直接飲用。</li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="f-ch6">
+      <h2><span class="num">06</span>蔬菜與水果</h2>
+      <div class="chapter-rule"></div>
+
+      <ul>
+        <li>平民菜園常見作物：蕪菁、高麗菜、韭蔥、菠菜、豌豆、扁豆等豆類。</li>
+        <li>本地水果：蘋果、梨、櫻桃</li>
+        <li>進口或高級：無花果、椰棗、葡萄乾。</li>
+      </ul>
+      <h4 class="mini-head">補充資料</h4>
+      <ul>
+        <li>糖漬：乾燥的小顆水果或水果片以砂糖或糖漿二次乾燥後密封也是宴會上的點心</li>
+        <li>燉煮水果、碾碎後製成煎餅（Fritters）、果汁、做成肉類醬汁也很常見，</li>
+        <li>儘管葡萄是當時常見作物，葡萄乾本身因不適合乾燥而仰賴進口，故為奢侈品</li>
+        <li>秋末至初春常因季候問題導致蔬菜短缺，也有過市民在收穫期為了多吃點蔬果，前往果園偷竊的趣事</li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="f-ch7">
+      <h2><span class="num">07</span>調味料與香草</h2>
+      <div class="chapter-rule"></div>
+
+      <h4 class="mini-head">本地香草</h4>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>用途</th><th>品項</th></tr></thead>
+          <tbody>
+            <tr><td>常見辛香植物</td><td>洋蔥、大蒜、芥菜種子(Senf)、蒔蘿、歐芹、葛縷子、茴香、香菜、芹菜、韭菜</td></tr>
+            <tr><td>藥草兼調味</td><td>辣根、杜松、鼠尾草、迷迭香、百里香、艾草、夏季香薄荷、圓葉當歸</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>以上平民可於自家菜園種植，取得成本低廉；修道院藥草園是香草知識傳承與品種保存的重要管道。<br/>
+      芥種因原料可在本地種植，被稱為中世紀最受歡迎的調味料。</p>
+
+      <h4 class="mini-head">平民的「香料替代品」</h4>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>替代品(本地)</th><th>模仿對象(進口)</th></tr></thead>
+          <tbody>
+            <tr><td>胡椒草(Pfefferkraut)</td><td>青胡椒</td></tr>
+            <tr><td>菖蒲根(Kalmuswurzel)</td><td>薑</td></tr>
+            <tr><td>紅花/染料薊(Färberdistel)</td><td>番紅花</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini-head">進口香料</h4>
+      <p>胡椒、番紅花、肉桂、肉荳蔻、丁香、薑：價格昂貴，是貴族彰顯財富與地位的重要元素，常見於宴飲場合。</p>
+
+      <h4 class="mini-head">補充資料</h4>
+      <ul>
+        <li>草藥有助於肉類固化與存放期間驅蟲，常與鹽一同添加；「為了掩蓋腐敗臭味而添加辛香料」算是倒因為果的說法</li>
+        <li>歐芹、鼠尾草、迷迭香或其他草藥，通常捆成一束掛在屋樑乾燥，或放在火爐附近加快製成、隨手烹飪使用</li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="f-ch8">
+      <h2><span class="num">08</span>飲品</h2>
+      <div class="chapter-rule"></div>
+
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>飲品</th><th>使用族群</th><th>備註</th></tr></thead>
+          <tbody>
+            <tr><td>水</td><td>全階層</td><td>中世紀普遍飲用，並非禁忌；貧民有時以少量醋酸化處理飲水。</td></tr>
+            <tr><td>酪乳(Buttermilch)、乳清</td><td>平民/農民</td><td>日常解渴飲品之一。</td></tr>
+            <tr><td>淡啤酒(Dünnbier)</td><td>平民家戶(含兒童)</td><td>利用釀酒後殘餘穀粕二次沖泡發酵，酒精濃度低於2%，成本遠低於正式啤酒</td></tr>
+            <tr><td>啤酒(含啤酒花)</td><td>各階層，城市尤盛</td><td>巴伐利亞地區至遲13世紀中葉已見啤酒花釀造文獻，14世紀中葉紐倫堡已設「Hopfenwäger」</td></tr>
+            <tr><td>葡萄酒</td><td>貴族及南方地區</td><td>對北方德語區平民而言負擔較重，偏向節慶或城市場合消費。</td></tr>
+            <tr><td>蜂蜜酒、果酒</td><td>各階層皆有記載</td><td>屬地方性/場合性飲品。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini-head">補充資料</h4>
+      <ul>
+        <li>葡萄酒：最受大眾歡迎的是白葡萄，品種為Elbling。知名的Riesling則在1435年有貴族確實購買藤枝的紀錄。</li>
+        <li>修道院種植葡萄，也釀酒（包含啤酒），幾乎是專業釀酒集團；他們有自己的會計帳本，也賣酒給附近城市的商人</li>
+        <li>香料酒（Hypocras），常見於貴族宴席，使用多種昂貴香料（肉桂、豆蔻、丁香和薑）浸泡或加熱而成。</li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="f-refs">
+      <details class="refs-details">
+        <summary>
+          <h2><span class="num">09</span>參考來源</h2>
+          <span class="refs-toggle"><span class="when-closed">展開 ＋</span><span class="when-open">收合 −</span></span>
+        </summary>
+      <div class="chapter-rule"></div>
+      <ul class="refs">
+        <li>Paul B. Newman《Daily life in the Middle Ages》</li>
+        <li><a href="https://www.historisches-lexikon-bayerns.de/Lexikon/Ern%C3%A4hrung_(Sp%C3%A4tmittelalter/Fr%C3%BChe_Neuzeit)" target="_blank" rel="noopener">Ernährung (Spätmittelalter/Frühe Neuzeit) – Historisches Lexikon Bayerns</a></li>
+        <li><a href="https://www.historisches-lexikon-bayerns.de/Lexikon/Landwirtschaft_(Sp%C3%A4tmittelalter/Fr%C3%BChe_Neuzeit)" target="_blank" rel="noopener">Landwirtschaft (Spätmittelalter/Frühe Neuzeit) – Historisches Lexikon Bayerns</a></li>
+        <li><a href="https://www.historisches-lexikon-bayerns.de/Lexikon/Bier" target="_blank" rel="noopener">Bier – Historisches Lexikon Bayerns</a></li>
+        <li><a href="https://home.uni-leipzig.de/siebenh/pdf/Essen%20und%20Trinken%20im%20MA.pdf" target="_blank" rel="noopener">Beat Siebenhaar, Die Küche des späten Mittelalters(Universität Leipzig, PDF)</a></li>
+        <li><a href="https://www.kleio.org/de/geschichte/mittelalter/alltag/kap_iv12/" target="_blank" rel="noopener">IV.1.2. Die Konservierung von Lebensmitteln – kleio.org</a></li>
+        <li><a href="https://www.kleio.org/de/geschichte/mittelalter/alltag/kap_iv14/" target="_blank" rel="noopener">Ernährungsverhalten der mittelalterlichen Bevölkerung – kleio.org</a></li>
+        <li><a href="https://www.kleio.org/de/geschichte/mittelalter/alltag/kap_iv11/" target="_blank" rel="noopener">Die unterschiedlichen Nahrungsprodukte – kleio.org</a></li>
+        <li><a href="https://de.wikipedia.org/wiki/Esskultur_im_Mittelalter" target="_blank" rel="noopener">Esskultur im Mittelalter – Wikipedia</a></li>
+        <li><a href="https://de.wikipedia.org/wiki/N%C3%BCrnberger_Lebkuchen" target="_blank" rel="noopener">Nürnberger Lebkuchen – Wikipedia</a></li>
+        <li><a href="https://blog.histofakt.de/2015/04/15/war-das-trinken-von-wasser-im-mittelalter-tabu/" target="_blank" rel="noopener">War das Trinken von Wasser im Mittelalter tabu? – blog.HistoFakt.de</a></li>
+        <li><a href="https://unipub.uni-graz.at/obvugrhs/download/pdf/2679837" target="_blank" rel="noopener">Lebensmittelkonservierung im Mittelalter im historisch-chemischen Kontext(Universität Graz)</a></li>
+        <li><a href="https://www.archaeologie-stiftung.de/media/archaeologie_erleben_1/tag_der_archaeologie_1/historische_kueche/Mittelalterkueche_2016.pdf" target="_blank" rel="noopener">Gewürze im Mittelalter(Archäologie-Stiftung, PDF)</a></li>
+        <li><a href="https://www.mittelalter-lexikon.de/wiki/Gew%C3%BCrz" target="_blank" rel="noopener">Gewürz – Mittelalter-Lexikon</a></li>
+        <li><a href="https://www.alltag-im-mittelalter.de/Gewuerze/" target="_blank" rel="noopener">Gewürze – Alltag im Mittelalter</a></li>
+        <li><a href="https://www.mittelalter-lexikon.de/wiki/Fleisch" target="_blank" rel="noopener">Fleisch – Mittelalter-Lexikon</a></li>
+        <li><a href="https://www.kinderzeitmaschine.de/mittelalter/spaetmittelalter/lucys-wissensbox/alltag-kindheit/100-kilo-fleisch-pro-kopf-und-jahr/" target="_blank" rel="noopener">100 Kilo Fleisch pro Kopf und Jahr? – Kinderzeitmaschine</a></li>
+        <li><a href="https://www.oxenweg.net/1-2-der-internationale-ochsenhandel/" target="_blank" rel="noopener">1.2. Der internationale Ochsenhandel – Oxenweg.net</a></li>
+        <li><a href="https://www.mittelalter-lexikon.de/wiki/Ochsenhandel" target="_blank" rel="noopener">Ochsenhandel – Mittelalter-Lexikon</a></li>
+        <li><a href="https://www.mittelalter-lexikon.de/wiki/Milch" target="_blank" rel="noopener">Milch – Mittelalter-Lexikon</a></li>
+        <li><a href="https://www.mittelalter-lexikon.de/wiki/Getr%C3%A4nke" target="_blank" rel="noopener">Getränke – Mittelalter-Lexikon</a></li>
+        <li><a href="https://de.wikipedia.org/wiki/D%C3%BCnnbier" target="_blank" rel="noopener">Dünnbier – Wikipedia</a></li>
+        <li><a href="https://deutschland-im-mittelalter.de/Kulturgeschichte/Ernaehrung/Nahrungsmittel" target="_blank" rel="noopener">Nahrungsmittel im Mittelalter – deutschland-im-mittelalter.de</a></li>
+      </ul>
+      </details>
+    </section>
+
+    <div class="colophon">
+      本筆記來源公開網路二手資料（線上百科、歷史辭典條目、通俗史學文章與少量學術論文節錄），無一手檔案或學術專著全文。
+    </div>
+  </div>
+  <div class="page" id="page-herbs" data-page="herbs" hidden>
+    <div class="doc-head" id="herbs-overview">
+      <div class="eyebrow">Physica &amp; Lapidarium · 藥草與礦石</div>
+      <h1 class="title">草藥、礦石</h1>
+
+      <div class="notice">
+        本頁內容主要取材自12世紀《Physica (Hildegard)》。<br/>
+        🌿 藥草與礦石療法僅反映當時觀念（體液學說），並非現代醫學建議。若涉及實際需求，請務必諮詢專業醫師。
+      </div>
+    </div>
+
+    <section class="chapter" id="hb-ch1">
+      <h2><span class="num">01</span>穀物與豆類</h2>
+      <div class="chapter-rule"></div>
+
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>名稱</th><th>性質</th><th>用途與使用方式</th></tr></thead>
+          <tbody>
+            <tr><td>大麥（Barley）</td><td>寒</td><td>體虛者應反覆浸泡大麥浴，直至恢復健康</td></tr>
+            <tr><td>豌豆（Peas）</td><td>寒</td><td>體寒者不宜。去皮後混入蜂蜜敷於太陽穴以繃帶包裹，能治多痰症</td></tr>
+            <tr><td>小扁豆（Lentils）</td><td>寒</td><td>與蝸牛殼共同磨粉敷在患處，可處理皮膚問題</td></tr>
+            <tr><td>黑麥（Rye）</td><td>微溫</td><td>胃寒者不宜。用黑麥麵包覆蓋後可消腫塊</td></tr>
+            <tr><td>小麥（Wheat）</td><td>溫</td><td>整穀水煮後敷頭可安神，或敷患處緩解背痛</td></tr>
+            <tr><td>燕麥（Oat）</td><td>溫</td><td>重病者不宜。搭配發汗浴可用於癱瘓調理</td></tr>
+            <tr><td>斯佩耳特小麥（Spelt）</td><td>溫</td><td>水煮後加入豬油或蛋黃，能促進病重者食慾</td></tr>
+            <tr><td>蠶豆（Broad beans）</td><td>溫</td><td>強健者與病弱者皆可食。煮溫服用可緩解內痛</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter" id="hb-ch2">
+      <h2><span class="num">02</span>香料與辛香植物</h2>
+      <div class="chapter-rule"></div>
+
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>名稱</th><th>性質</th><th>用途與使用方式</th></tr></thead>
+          <tbody>
+            <tr><td>大麻籽（Hemp）</td><td>溫</td><td>強健體質者食用有益，過量易致頭痛</td></tr>
+            <tr><td>莪朮（Zedoary）</td><td>中溫</td><td>對多種內部問題有益</td></tr>
+            <tr><td>孜然（Cumin）</td><td>中溫</td><td>可治鼻塞，惟心臟病者需慎用</td></tr>
+            <tr><td>甘草（Licorice）</td><td>中溫</td><td>安胃、清神</td></tr>
+            <tr><td>肉豆蔻（Nutmeg）</td><td>偏高溫</td><td>有助情緒平衡與消化</td></tr>
+            <tr><td>胡椒（Pepper）</td><td>高溫</td><td>適量使用可助消化、改善食慾不振</td></tr>
+            <tr><td>肉桂（Cinnamon）</td><td>高溫</td><td>可去除體內不良體液，增進整體健康</td></tr>
+            <tr><td>高良薑（Galingale）</td><td>極溫</td><td>對發燒與呼吸道問題有廣泛療效，評價極高</td></tr>
+            <tr><td>薑（Ginger）</td><td>極溫</td><td>過量有害，可治胃疾與潰瘍</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter" id="hb-ch3">
+      <h2><span class="num">03</span>藥草與花卉圖鑑</h2>
+      <div class="chapter-rule"></div>
+
+      <h4 class="mini-head">常用治療類</h4>
+      <p>使用方式多為內服，少數可生食或置於患部、手持</p>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>名稱</th><th>性質</th><th>主要療效</th></tr></thead>
+          <tbody>
+            <tr><td>馬鞭草（Vervain）</td><td>偏寒</td><td>治潰瘍、傷口、黃疸、咽喉腫，又名「神聖之枝」</td></tr>
+            <tr><td>康復力（Comfrey）</td><td>寒</td><td>治外傷，因副作用須慎用</td></tr>
+            <tr><td>龍膽（Gentian）</td><td>微溫</td><td>治心痛與發燒</td></tr>
+            <tr><td>茴香（Fennel）</td><td>溫</td><td>促消化、助眼疾、改善失眠與憂鬱情緒</td></tr>
+            <tr><td>鼠尾草（Sage）</td><td>溫</td><td>治口臭至內科重症</td></tr>
+            <tr><td>蕨（Fern）</td><td>溫</td><td>驅邪、護佑新生兒、治痛風、復聽</td></tr>
+            <tr><td>巖愛草（Dittany）</td><td>溫</td><td>治心疾、結石、癱瘓，肢體麻痺初期可用</td></tr>
+            <tr><td>藥水蘇（Betony）</td><td>溫</td><td>助認知、放鬆心神，入酒飲用能消月經問題</td></tr>
+            <tr><td>矢車菊（Cornflower）</td><td>溫</td><td>治骨折與癱瘓</td></tr>
+            <tr><td>曼德拉草（Mandrake）</td><td>溫</td><td>排解憂鬱、去淫穢（退熱）</td></tr>
+            <tr><td>蛇麻（Hop）</td><td>溫</td><td>因致憂鬱而非藥用，多用抑制飲品苦味</td></tr>
+            <tr><td>纈草（Valerian）</td><td>溫</td><td>治胸膜炎與腹痛</td></tr>
+            <tr><td>艾草（Mugwort）</td><td>高溫</td><td>治冷胃、排出體內雜質、助消化</td></tr>
+            <tr><td>苦艾（Wormwood）</td><td>高溫</td><td>各疾病萬用藥。治頭胸痛、助消化</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini-head">一般藥草(簡表)</h4>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>名稱</th><th>主要用途</th></tr></thead>
+          <tbody>
+            <tr><td>玫瑰（Rose）</td><td>清目、治感染</td></tr>
+            <tr><td>百合（Lily）</td><td>外用治多種皮膚病</td></tr>
+            <tr><td>車前草（Plantain）</td><td>減胃熱</td></tr>
+            <tr><td>薰衣草（Lavender）</td><td>治蝨、清呼吸道。不建議食用</td></tr>
+            <tr><td>葫蘆巴（Fenugreek）</td><td>配酒治間歇熱</td></tr>
+            <tr><td>香薄荷（Savory）</td><td>心弱、憂鬱者食用可改善</td></tr>
+            <tr><td>芸香（Rue）</td><td>助消化、抑制不潔慾望</td></tr>
+            <tr><td>神香草（Hyssop）</td><td>益肝肺</td></tr>
+            <tr><td>蓍草（Yarrow）</td><td>清創、治內傷</td></tr>
+            <tr><td>金盞花（Calendula）</td><td>抗中毒、舒緩與調理頭皮</td></tr>
+            <tr><td>龍葵（Black Nightshade）</td><td>治心痛、腫脹、牙痛</td></tr>
+            <tr><td>牡丹（Peony）</td><td>治中暑與熱病</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter" id="hb-ch4">
+      <h2><span class="num">04</span>礦石與寶石圖鑑</h2>
+      <div class="chapter-rule"></div>
+
+      <p>傳說寶石生於東方烈日之地。那裡山熱如火，河水近沸；洪水漫過熱山，水火相遇，濺起的泡沫經數日凝成寶石。因成形時所受日照與熱度不同，寶石各有其色與力量，並蘊藏水火之氣，使邪祟不敢近身。</p>
+
+      <h4 class="mini-head">主要礦石一覽</h4>
+      <p>使用方式多為隨身佩戴、發作時含握、含入口中、置入液體浸泡後飲用</p>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>名稱</th><th>用途</th></tr></thead>
+          <tbody>
+            <tr><td>綠寶石</td><td>對一切虛弱、心胃脅痛、癲癇發作有效</td></tr>
+            <tr><td>風信子石</td><td>治眼弱、視濁；傳統上用於解除「幻象或魔咒附身」</td></tr>
+            <tr><td>縞瑪瑙</td><td>對「源於空氣的疾病」效果顯著：眼濁、心脅痛、胃疾、脾疾、高燒、憂鬱</td></tr>
+            <tr><td>綠柱石</td><td>解毒；安定情緒、平息爭執</td></tr>
+            <tr><td>纏絲瑪瑙</td><td>強智識與全身感官，袪怒、愚昧與無度；亦傳統上用於情慾調理</td></tr>
+            <tr><td>藍寶石</td><td>治眼翳、眼紅痛眼弱；<b>傳統記載對嚴重痛風有速效</b></td></tr>
+            <tr><td>玉髓紅石</td><td>傳統用於分娩、急性熱、黃疸</td></tr>
+            <tr><td>黃玉</td><td>傳統用於視力衰退、退燒、抗瘋狂</td></tr>
+            <tr><td>貴橄欖石</td><td>傳統用於退燒、助成長與記憶</td></tr>
+            <tr><td>碧玉</td><td>傳統上用於保護母子免受侵擾；亦傳治耳聾</td></tr>
+            <tr><td>玉髓</td><td>阻擋病痛侵入、賦予智慧與平靜、退燒、平息脾氣</td></tr>
+            <tr><td>綠玉髓</td><td>傳統用於痛風、虛弱疲勞、癲癇、憤怒管理</td></tr>
+            <tr><td>紅榴石/紅寶石</td><td>去除侵入性疾病、促進癒合與力量；治頭痛</td></tr>
+            <tr><td>紫水晶</td><td>治蟲咬、美化皮膚，減退體內腫塊</td></tr>
+            <tr><td>瑪瑙</td><td>治蟲咬與精神疾病；隨身攜帶賦予良好判斷力</td></tr>
+            <tr><td>鑽石</td><td>令邪祟恐懼，抑制瘋狂、暴怒、說謊發作</td></tr>
+            <tr><td>磁石</td><td>治幻象/惡靈折磨，以及神智缺乏理解力之症狀</td></tr>
+            <tr><td>琥珀石</td><td>治胃痛與排尿困難</td></tr>
+            <tr><td>水晶</td><td>視力不佳、咽喉痛、胃腹痛、心臟不適</td></tr>
+            <tr><td>珍珠</td><td>傳統用於淨水、退燒、頭痛</td></tr>
+            <tr><td>光玉髓</td><td>止鼻血</td></tr>
+            <tr><td>雪花石膏</td><td>無顯著療效，應慎用</td></tr>
+            <tr><td>石灰</td><td><b>明言不可食用</b>；用於保存織物、除肉中蛆蟲</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter" id="hb-ch5">
+      <h2><span class="num">05</span>附錄1：工作流程</h2>
+      <div class="chapter-rule"></div>
+
+      <h4 class="mini-head">1. 採集階段</h4>
+      <p><b>良辰吉時</b></p>
+      <ul>
+        <li><b>月相：</b>依Hildegard本人主張，藥草應月亮漸盈（上弦至滿月）時採摘，此時植物「充滿有效液汁」，藥效最強。</li>
+        <li><b>時辰：</b>清晨、露水未乾時採摘最有效；有些傳統也重視正午鐘聲時分。</li>
+        <li><b>特定日期：</b>某些教會節日也視為採集的吉時，尤其在五月。</li>
+        <li><b>迷信說法：</b>教堂墓地、十字路口等特殊地點生長的藥草具有更強效力。</li>
+      </ul>
+      <p><b>採集人力</b><br/>
+      修道院中，懂藥草的修士、修女未必親自採集，常指派平民或跑腿的男孩代為採收，並用通俗說法指示採集地點（例如「牆邊最後一畦花圃」）。</p>
+
+      <h4 class="mini-head">2. 加工處理</h4>
+      <ul>
+        <li>藥草可依需求使用新鮮或曬乾狀態</li>
+        <li>如要製作膏藥、藥粉，會用研缽與杵（Mörser und Pistill）將藥材搗碎或磨粉</li>
+      </ul>
+
+      <h4 class="mini-head">3. 製劑階段</h4>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>劑型</th><th>說明</th></tr></thead>
+          <tbody>
+            <tr><td>湯劑/煎劑Sud/Absud)</td><td>藥材加水煎煮後服用</td></tr>
+            <tr><td>藥酒/飲劑(Trank)</td><td>藥材泡製或煮入酒中飲用</td></tr>
+            <tr><td>糖漿(Syrup)</td><td>加糖或蜂蜜調製</td></tr>
+            <tr><td>蜜膏(Latwerge，拉丁 Electuarium)</td><td>果汁與蜂蜜熬煮濃縮而成，古至中世紀常見的保存劑型</td></tr>
+            <tr><td>藥粉(Pulver)</td><td>乾燥藥材磨粉</td></tr>
+            <tr><td>藥丸(Pille)</td><td>藥粉製成丸劑</td></tr>
+            <tr><td>膏藥/軟膏(Salbe)</td><td>藥草於研缽搗碎後，與油脂一同鍋煮至特定顏色/稠度，過濾後保存</td></tr>
+            <tr><td>敷貼/膏布(Pflaster)</td><td>外用敷於患處</td></tr>
+            <tr><td>藥草濕敷(Bähung)</td><td>藥草煮過後直接濕敷患部</td></tr>
+            <tr><td>薰香/煙燻(Räucherung)</td><td>燃燒藥草進行空氣淨化或治療性薰香</td></tr>
+            <tr><td>香囊(Riechkissen)</td><td>藥草填入布袋，懸掛於室內或隨身攜帶</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini-head">4. 儲存方式</h4>
+      <ul>
+        <li>修道院藥草園（Herbularius）：依聖加侖修道院平面圖傳統，每一畦只種一種植物，以免混淆與確保純度</li>
+        <li>藥草園與病房（Infirmarium）、藥房分開但相鄰</li>
+        <li>加工完成的藥劑存放於藥草儲藏室（Kräuterkammer）或修道院藥房（Klosterapotheke）</li>
+      </ul>
+
+      <h4 class="mini-head">5. 宗教儀式元素</h4>
+      <p>部分資料提及，藥材或成品會經聖水祝聖或伴隨禱詞使用，將藥效與信仰結合。</p>
+    </section>
+
+    <section class="chapter" id="hb-ch6">
+      <h2><span class="num">06</span>附錄2：依植物部位的採收時程表</h2>
+      <div class="chapter-rule"></div>
+
+      <blockquote>整理自現代植物化學／藥草學資料，非中世紀原典直接記載。</blockquote>
+
+      <h4 class="mini-head">通用採收守則</h4>
+      <p>挑乾燥、晴朗的天氣採收（雨後或潮濕天氣採的藥草易發霉）；使用乾淨、鋒利的工具（採葉花用剪刀，挖根用小鏟），避免壓傷植株組織。</p>
+
+      <ul class="harvest-grid">
+        <li class="harvest-card">
+          <span class="harvest-part">根部</span>
+          <div class="harvest-field"><span class="field-label">採收時機</span><p class="field-value">早春(地上部尚未發育前)或深秋(地上部枯萎後)，當日則在日出前</p></div>
+          <div class="harvest-field"><span class="field-label">原因</span><p class="field-value">養分於夜間退回根部儲存，日出後開始往上輸送</p></div>
+        </li>
+        <li class="harvest-card">
+          <span class="harvest-part">葉片</span>
+          <div class="harvest-field"><span class="field-label">採收時機</span><p class="field-value">開花前至初花期，當日則接近正午</p></div>
+          <div class="harvest-field"><span class="field-label">原因</span><p class="field-value">葉片精油/有效成分濃度最高，過早或過晚採收易流失揮發性成分</p></div>
+        </li>
+        <li class="harvest-card">
+          <span class="harvest-part">花朵</span>
+          <div class="harvest-field"><span class="field-label">採收時機</span><p class="field-value">花朵完全綻放時。依品種不同，一日中的開花時辰也不同</p></div>
+          <div class="harvest-field"><span class="field-label">原因</span><p class="field-value">完全展開時養分與香氣最盛</p></div>
+        </li>
+        <li class="harvest-card">
+          <span class="harvest-part">樹皮</span>
+          <div class="harvest-field"><span class="field-label">採收時機</span><p class="field-value">春季，樹液流動最旺盛時</p></div>
+          <div class="harvest-field"><span class="field-label">原因</span><p class="field-value">最容易剝離，汁液也最飽滿</p></div>
+        </li>
+        <li class="harvest-card">
+          <span class="harvest-part">種子</span>
+          <div class="harvest-field"><span class="field-label">採收時機</span><p class="field-value">完全成熟後；當日則在正午前後</p></div>
+          <div class="harvest-field"><span class="field-label">原因</span><p class="field-value">種子內有效成分達到高峰</p></div>
+        </li>
+        <li class="harvest-card">
+          <span class="harvest-part">果實</span>
+          <div class="harvest-field"><span class="field-label">採收時機</span><p class="field-value">接近完全成熟，但採收後立即攤平薄層乾燥</p></div>
+          <div class="harvest-field"><span class="field-label">原因</span><p class="field-value">避免發霉，同時保留藥效與發芽力（若需留種）</p></div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="hb-ch7">
+      <h2><span class="num">07</span>附錄3：修道院體系與世俗治療者的差異</h2>
+      <div class="chapter-rule"></div>
+
+      <ul class="compare-stack">
+        <li class="compare-card">
+          <span class="compare-aspect">知識來源</span>
+          <div class="compare-cols">
+            <div><span class="field-label">修道院</span><p class="field-value">抄寫、研讀古典醫學文獻（因具識字能力）</p></div>
+            <div><span class="field-label">世俗</span><p class="field-value">家族口傳，經驗代代相傳，文字紀錄少</p></div>
+          </div>
+        </li>
+        <li class="compare-card">
+          <span class="compare-aspect">角色分工</span>
+          <div class="compare-cols">
+            <div><span class="field-label">修道院</span><p class="field-value">早期一人身兼數職，後期改為專業分工：herbarius（藥草園管理者)→ pigmentarius（修道院藥房負責人，負責調劑）→ phlebotomator（放血專責者）</p></div>
+            <div><span class="field-label">世俗</span><p class="field-value">分工鬆散，依地區與需求而定</p></div>
+          </div>
+        </li>
+        <li class="compare-card">
+          <span class="compare-aspect">社會地位</span>
+          <div class="compare-cols">
+            <div><span class="field-label">修道院</span><p class="field-value">較高，屬於「內科」性質的照護</p></div>
+            <div><span class="field-label">世俗</span><p class="field-value">依職業不同有所差異：草藥女士 Kräuterfrau優於外科醫師 Wundarzt與理髮師 Bader等市集流動執業者</p></div>
+          </div>
+        </li>
+        <li class="compare-card">
+          <span class="compare-aspect">訓練方式</span>
+          <div class="compare-cols">
+            <div><span class="field-label">修道院</span><p class="field-value">修道院內研習+抄本傳承</p></div>
+            <div><span class="field-label">世俗</span><p class="field-value">學徒制（理髮外科）或家族傳承（藥草女士）</p></div>
+          </div>
+        </li>
+        <li class="compare-card">
+          <span class="compare-aspect">業務範圍</span>
+          <div class="compare-cols">
+            <div><span class="field-label">修道院</span><p class="field-value">側重藥草療法、飲食調養、預防保健、病患照護</p></div>
+            <div><span class="field-label">世俗</span><p class="field-value">放血、拔牙、正骨、白內障手術多由Bader/Wundarzt負責；藥草知識、接生則多由女性治療者負責</p></div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="hb-ch8">
+      <h2><span class="num">08</span>附錄4：台詞方向指引</h2>
+      <div class="chapter-rule"></div>
+
+      <p>當角色具備相關知識時，扮演時的語氣調性</p>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>情境</th><th>語氣方向建議</th></tr></thead>
+          <tbody>
+            <tr><td>判斷藥材性質時</td><td>使用「濕潤/乾燥」「溫熱/寒涼」一類體液論式的描述詞彙</td></tr>
+            <tr><td>開立藥方前的診斷語</td><td>將病因歸結於體內元素或體液失衡，語氣帶有將人體視為自然縮影的宇宙觀</td></tr>
+            <tr><td>推薦藥草時</td><td>描述藥效時連結該植物的生長環境或外觀特徵(如向陽而生、根莖形狀)，暗示形性相應的邏輯</td></tr>
+            <tr><td>警告危險藥材時</td><td>強調需經正確處理方可使用，語氣鄭重，帶有對自然力量的敬畏感</td></tr>
+            <tr><td>描述礦石療效時</td><td>連結礦石的生成過程(日照、深埋地底、水火交融等)與其療效之間的因果想像，強化萬物皆有來歷的世界觀</td></tr>
+            <tr><td>使用儀式性療法時</td><td>加入簡短的祈願或誦念元素作為療程一部分，暗示信仰與醫術密不可分</td></tr>
+            <tr><td>面對懷疑者的回應</td><td>強調這是觀察與經驗累積而來的知識體系，語氣帶一絲對自身學識的自信</td></tr>
+            <tr><td>提醒劑量或體質差異時</td><td>強調因人而異的判斷邏輯，語氣像是憑經驗判斷</td></tr>
+            <tr><td>傳授知識的態度</td><td>帶一點知識珍貴、不輕易外傳的保留感，語氣接近學者對其專業的自持</td></tr>
+            <tr><td>描述藥材/礦石來源的神秘感</td><td>強調產地遙遠、採集時機講究等細節，營造取得不易的稀有感</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter" id="hb-refs">
+      <details class="refs-details">
+        <summary>
+          <h2><span class="num">09</span>參考來源</h2>
+          <span class="refs-toggle"><span class="when-closed">展開 ＋</span><span class="when-open">收合 −</span></span>
+        </summary>
+      <div class="chapter-rule"></div>
+      <ul class="refs">
+        <li>Hildebrandt/Gloning(De Gruyter， 2010)拉丁校勘本</li>
+        <li>Riha 德譯本(2012)、Throop 英譯本(1998)、Atherton 選譯本(2001)</li>
+        <li>Adamson 書評(<i>The Medieval Review</i>， 2011)、Meier 書評(<i>Arbitrium</i>， 2016)</li>
+        <li>Brett 碩論《Excavating a Medieval Lapidary》(2008)</li>
+        <li>kathPedia、Wikipedia〈Physica (Hildegard)〉、DeWiki</li>
+      </ul>
+      </details>
+    </section>
+
+    <div class="colophon">
+      本筆記來源公開網路二手資料（線上百科、歷史辭典條目、通俗史學文章與少量學術論文節錄），無一手檔案或學術專著全文。
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  /* ---------- 淺色／深色主題手動切換 ---------- */
+  var themeToggle = document.getElementById('themeToggle');
+  var root = document.documentElement;
+
+  function getEffectiveTheme(){
+    var attr = root.getAttribute('data-theme');
+    if(attr === 'light' || attr === 'dark') return attr;
+    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  function setTheme(theme){
+    root.setAttribute('data-theme', theme);
+    try{ localStorage.setItem('theme-pref', theme); }catch(e){}
+  }
+  try{
+    var stored = localStorage.getItem('theme-pref');
+    if(stored === 'light' || stored === 'dark'){ root.setAttribute('data-theme', stored); }
+  }catch(e){}
+  if(themeToggle){
+    themeToggle.addEventListener('click', function(){
+      setTheme(getEffectiveTheme() === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  var menuBtn = document.getElementById('menuBtn');
+  var panel = document.getElementById('navPanel');
+  var backdrop = document.getElementById('backdrop');
+
+  function openPanel(){
+    panel.classList.add('open');
+    backdrop.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closePanel(){
+    panel.classList.remove('open');
+    backdrop.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click', function(){
+    if(panel.classList.contains('open')) closePanel(); else openPanel();
+  });
+  backdrop.addEventListener('click', closePanel);
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closePanel();
+  });
+
+  var buttons = document.querySelectorAll('#filterSeg button');
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      buttons.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.body.classList.remove('mode-verified','mode-inference');
+      var mode = btn.getAttribute('data-mode');
+      if(mode === 'verified') document.body.classList.add('mode-verified');
+      if(mode === 'inference') document.body.classList.add('mode-inference');
+    });
+  });
+
+  /* ---------- Multi-page routing ---------- */
+  var PAGES_WITH_FILTER = { intro:false, districts:false, uneven:true, climate:true, monastery:false, food:false, herbs:false };
+  var PAGES_WITH_TOC = { intro:false, districts:true, uneven:true, climate:true, monastery:true, food:true, herbs:true };
+  var pageEls = {};
+  document.querySelectorAll('.page').forEach(function(p){ pageEls[p.getAttribute('data-page')] = p; });
+  var pageTabs = Array.prototype.slice.call(document.querySelectorAll('.pagetab'));
+  var filterboxInline = document.getElementById('filterboxInline');
+  var tocLists = {};
+  document.querySelectorAll('nav.toc[data-toc-for]').forEach(function(n){ tocLists[n.getAttribute('data-toc-for')] = n; });
+
+  var links = {}, targets = {};
+  function buildTocIndex(pageId){
+    var nav = tocLists[pageId];
+    if(!nav) return;
+    var as = Array.prototype.slice.call(nav.querySelectorAll('a'));
+    links[pageId] = as;
+    targets[pageId] = as.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+    as.forEach(function(a){
+      a.addEventListener('click', function(){ closePanel(); });
+    });
+  }
+  Object.keys(tocLists).forEach(buildTocIndex);
+
+  var currentPage = 'intro';
+
+  function switchPage(id, opts){
+    opts = opts || {};
+    if(!pageEls[id]) id = 'intro';
+    currentPage = id;
+
+    Object.keys(pageEls).forEach(function(key){
+      pageEls[key].hidden = (key !== id);
+    });
+    pageTabs.forEach(function(tab){
+      var active = tab.getAttribute('data-page') === id;
+      tab.classList.toggle('active', active);
+      tab.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    Object.keys(tocLists).forEach(function(key){
+      tocLists[key].hidden = (key !== id);
+    });
+    if(filterboxInline){
+      filterboxInline.style.display = PAGES_WITH_FILTER[id] ? '' : 'none';
+    }
+    if(menuBtn){
+      menuBtn.style.display = PAGES_WITH_TOC[id] ? '' : 'none';
+    }
+    closePanel();
+    if(!opts.keepHash){
+      history.replaceState(null, '', '#p-' + id);
+    }
+    if(!opts.keepScroll){
+      window.scrollTo(0, 0);
+    }
+    onScroll();
+  }
+
+  pageTabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      switchPage(tab.getAttribute('data-page'));
+    });
+  });
+
+  function onScroll(){
+    var as = links[currentPage], ts = targets[currentPage];
+    if(!as || !ts || !ts.length) return;
+    var pos = window.scrollY + 120;
+    var current = ts[0];
+    ts.forEach(function(t){ if(t.offsetTop <= pos) current = t; });
+    as.forEach(function(a){ a.classList.remove('active'); });
+    var idx = ts.indexOf(current);
+    if(idx > -1) as[idx].classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  function routeFromHash(){
+    var hash = location.hash.replace('#','');
+    if(hash.indexOf('p-') === 0){
+      switchPage(hash.slice(2), {keepHash:true});
+    } else if(hash && document.getElementById(hash)){
+      var el = document.getElementById(hash);
+      var pageAncestor = el.closest ? el.closest('.page') : null;
+      var pageId = pageAncestor ? pageAncestor.getAttribute('data-page') : currentPage;
+      switchPage(pageId, {keepHash:true, keepScroll:true});
+    } else {
+      switchPage('intro', {keepHash:true, keepScroll:true});
+    }
+  }
+  routeFromHash();
+  window.addEventListener('hashchange', routeFromHash);
+  onScroll();
+})();
+</script>
