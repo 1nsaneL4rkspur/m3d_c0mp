@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f8f9">
 <title>神聖羅馬帝國考察誌</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
@@ -16,6 +17,7 @@
     --ink:#22262c;
     --ink-soft:#5c636c;
     --ink-faint:#98a0a8;
+    --pagetab-faint:#82898f; /* .pagetab 專用，比 --ink-faint 深一點，提高可讀性 */
     --rule:#e7e9ec;
     --rule-strong:#d6dade;
     --accent:#6b8fa3;
@@ -30,55 +32,6 @@
     --shadow: 0 1px 2px rgba(30,34,40,0.03), 0 3px 14px rgba(30,34,40,0.035);
     --shadow-lg: 0 10px 32px rgba(30,34,40,0.07);
     --grid-line: rgba(90,100,112,0.05);
-  }
-
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      color-scheme: dark;
-      --bg:#101317;
-      --surface:#171b20;
-      --surface-2:#1d2228;
-      --ink:#e5e7ea;
-      --ink-soft:#a3a9b1;
-      --ink-faint:#666d76;
-      --rule:#282e35;
-      --rule-strong:#383f47;
-      --accent:#8fb0c2;
-      --accent-ink:#0d1216;
-      --accent-soft:#8fb0c222;
-      --verified:#79b6ab;
-      --verified-bg:#16211f;
-      --verified-border:#284440;
-      --inference:#a8a4c4;
-      --inference-bg:#1e1c29;
-      --inference-border:#332f47;
-      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 3px 14px rgba(0,0,0,0.3);
-      --shadow-lg: 0 10px 32px rgba(0,0,0,0.45);
-      --grid-line: rgba(180,190,200,0.04);
-    }
-  }
-  :root[data-theme="dark"]{
-    color-scheme: dark;
-    --bg:#101317;
-    --surface:#171b20;
-    --surface-2:#1d2228;
-    --ink:#e5e7ea;
-    --ink-soft:#a3a9b1;
-    --ink-faint:#666d76;
-    --rule:#282e35;
-    --rule-strong:#383f47;
-    --accent:#8fb0c2;
-    --accent-ink:#0d1216;
-    --accent-soft:#8fb0c222;
-    --verified:#79b6ab;
-    --verified-bg:#16211f;
-    --verified-border:#284440;
-    --inference:#a8a4c4;
-    --inference-bg:#1e1c29;
-    --inference-border:#332f47;
-    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 3px 14px rgba(0,0,0,0.3);
-    --shadow-lg: 0 10px 32px rgba(0,0,0,0.45);
-    --grid-line: rgba(180,190,200,0.04);
   }
 
   *{box-sizing:border-box;}
@@ -145,23 +98,6 @@
     background:var(--accent); border-color:var(--accent); color:var(--accent-ink);
   }
 
-  .theme-toggle{
-    flex:none; width:32px; height:32px; border-radius:8px; border:1px solid var(--rule-strong);
-    background:var(--surface); cursor:pointer; padding:0; box-shadow:var(--shadow);
-    display:flex; align-items:center; justify-content:center; color:var(--ink-soft);
-    transition:background .18s ease, border-color .18s ease, color .18s ease;
-  }
-  .theme-toggle:hover{ background:var(--surface-2); }
-  .theme-toggle svg{ display:block; }
-  .theme-toggle .icon-sun{ display:none; }
-  .theme-toggle .icon-moon{ display:block; }
-  :root[data-theme="dark"] .theme-toggle .icon-sun{ display:block; }
-  :root[data-theme="dark"] .theme-toggle .icon-moon{ display:none; }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]) .theme-toggle .icon-sun{ display:block; }
-    :root:not([data-theme="light"]) .theme-toggle .icon-moon{ display:none; }
-  }
-
   .navpanel{
     max-height:0; overflow:hidden;
     background:color-mix(in srgb, var(--bg) 92%, transparent);
@@ -204,9 +140,10 @@
   .seg button.active .dot{ border-color:var(--bg); }
 
   nav.toc{ display:flex; flex-direction:column; gap:2px; font-size:12.5px; }
+  nav.toc[hidden]{ display:none !important; }
   nav.toc a{
     color:var(--ink-soft); text-decoration:none;
-    padding:7px 10px; border-radius:6px; border-left:2px solid transparent;
+    padding:7px 10px; border-left:2px solid transparent;
   }
   nav.toc a:hover{ background:var(--surface-2); color:var(--ink); }
   nav.toc a.active{ color:var(--accent); border-left-color:var(--accent); background:var(--accent-soft); font-weight:600; }
@@ -315,19 +252,30 @@
   .remark b{ color:var(--ink-faint); font-weight:600; }
 
   /* ---------- Page tabs (top-level site nav) ---------- */
-  .pagetabs{
-    display:flex; gap:2px; overflow-x:auto; -webkit-overflow-scrolling:touch;
-    padding:0 clamp(14px,4vw,24px); border-bottom:1px solid var(--rule);
-    background:var(--bg); scrollbar-width:thin;
+  .pagetabs{ border-bottom:1px solid var(--rule); background:var(--surface); }
+  .pagetabs-trigger{
+    width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:11px clamp(14px,4vw,24px) 10px; border:none; background:transparent; cursor:pointer;
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.03em;
+    color:var(--accent); font-weight:600; text-align:left;
   }
+  .pagetabs-trigger-icon{
+    flex:none; display:block; color:var(--pagetab-faint); transition:transform .2s ease;
+  }
+  .pagetabs.open .pagetabs-trigger-icon{ transform:rotate(180deg); }
+  .pagetabs-menu{
+    display:flex; flex-direction:column; max-height:0; overflow:hidden;
+    transition:max-height .28s ease;
+  }
+  .pagetabs.open .pagetabs-menu{ max-height:70vh; overflow-y:auto; }
   .pagetab{
-    flex:none; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.04em;
-    padding:10px 14px 9px; border:none; border-bottom:2px solid transparent;
-    background:transparent; color:var(--ink-faint); cursor:pointer; white-space:nowrap;
-    transition:color .15s ease;
+    flex:none; text-align:left; font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.02em;
+    padding:11px clamp(14px,4vw,24px); border:none; border-left:2px solid transparent;
+    background:transparent; color:var(--pagetab-faint); cursor:pointer; white-space:normal;
+    transition:color .15s ease, background .15s ease, border-color .15s ease;
   }
-  .pagetab:hover{ color:var(--ink-soft); }
-  .pagetab.active{ color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .pagetab:hover{ color:var(--ink); background:var(--surface-2); }
+  .pagetab.active{ color:var(--accent); border-left-color:var(--accent); background:var(--accent-soft); font-weight:600; }
 
   .page[hidden]{ display:none !important; }
 
@@ -356,73 +304,41 @@
   }
   .plain-card > :last-child{ margin-bottom:0; }
 
-  .role-grid{
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
-    gap:12px; margin:0 0 18px; padding:0; list-style:none;
+  /* 共用卡片基礎樣式：原 role-card / harvest-card / compare-card 合併於此 */
+  .info-card-list{
+    margin:0 0 18px; padding:0; list-style:none;
   }
-  .role-card{
+  .info-card-list.grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px;
+  }
+  .info-card-list.stack{
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .info-card{
     border:1px solid var(--rule); border-radius:10px; background:var(--surface);
     padding:13px 15px; box-shadow:var(--shadow); position:relative;
   }
-  .role-card::before{
+  .info-card::before{
     content:""; position:absolute; left:0; top:12px; bottom:12px; width:2px;
     background:var(--accent); border-radius:2px; opacity:.55;
   }
-  .role-card .role-name{
-    display:block; font-family:"IBM Plex Mono",monospace; font-size:11.5px;
-    letter-spacing:.02em; color:var(--accent); margin-bottom:5px; font-weight:600;
-  }
-  .role-card .role-desc{ margin:0; color:var(--ink-soft); }
-
-  .harvest-grid{
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
-    gap:12px; margin:0 0 18px; padding:0; list-style:none;
-  }
-  .harvest-card{
-    border:1px solid var(--rule); border-radius:10px; background:var(--surface);
-    padding:13px 15px; box-shadow:var(--shadow); position:relative;
-  }
-  .harvest-card::before{
-    content:""; position:absolute; left:0; top:12px; bottom:12px; width:2px;
-    background:var(--accent); border-radius:2px; opacity:.55;
-  }
-  .harvest-card .harvest-part{
+  .info-card .info-card-title{
     display:block; font-family:"IBM Plex Mono",monospace; font-size:11.5px;
     letter-spacing:.02em; color:var(--accent); margin-bottom:8px; font-weight:600;
   }
-  .harvest-card .harvest-field{ margin:0 0 8px; }
-  .harvest-card .harvest-field:last-child{ margin-bottom:0; }
-  .harvest-card .field-label{
-    display:block; font-family:"IBM Plex Mono",monospace; font-size:9px;
-    letter-spacing:.1em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:2px;
-  }
-  .harvest-card .field-value{ margin:0; color:var(--ink-soft); }
-
-  .compare-stack{
-    display:flex; flex-direction:column; gap:12px; margin:0 0 18px; padding:0; list-style:none;
-  }
-  .compare-card{
-    border:1px solid var(--rule); border-radius:10px; background:var(--surface);
-    padding:13px 15px; box-shadow:var(--shadow); position:relative;
-  }
-  .compare-card::before{
-    content:""; position:absolute; left:0; top:12px; bottom:12px; width:2px;
-    background:var(--accent); border-radius:2px; opacity:.55;
-  }
-  .compare-card .compare-aspect{
-    display:block; font-family:"IBM Plex Mono",monospace; font-size:11.5px;
-    letter-spacing:.02em; color:var(--accent); margin-bottom:8px; font-weight:600;
-  }
-  .compare-card .compare-cols{
+  .info-card .info-card-title.tight{ margin-bottom:5px; }
+  .info-card .info-card-field{ margin:0 0 8px; }
+  .info-card .info-card-field:last-child{ margin-bottom:0; }
+  .info-card .info-card-cols{
     display:grid; grid-template-columns:1fr 1fr; gap:14px;
   }
-  .compare-card .field-label{
+  .info-card .info-card-label{
     display:block; font-family:"IBM Plex Mono",monospace; font-size:9px;
     letter-spacing:.1em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:2px;
   }
-  .compare-card .field-value{ margin:0; color:var(--ink-soft); }
+  .info-card .info-card-value{ margin:0; color:var(--ink-soft); }
   @media (max-width:520px){
-    .compare-card .compare-cols{ grid-template-columns:1fr; gap:8px; }
+    .info-card .info-card-cols{ grid-template-columns:1fr; gap:8px; }
   }
 
   /* ---------- 參考來源 accordion ---------- */
@@ -451,7 +367,7 @@
   .mini-accordion summary{
     cursor:pointer; list-style:none;
     display:flex; align-items:center; justify-content:space-between; gap:10px;
-    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.03em;
+    font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.03em;
     color:var(--ink-soft); font-weight:600;
   }
   .mini-accordion summary::-webkit-details-marker{ display:none; }
@@ -489,6 +405,7 @@
   @media (max-width: 600px){
     main{ padding:28px 18px 90px; }
     .navpanel.open{ max-height:85vh; }
+    .pagetabs.open .pagetabs-menu{ max-height:85vh; }
   }
 </style>
 </head>
@@ -508,32 +425,24 @@
         </svg>
         <span class="menu-btn-label">段落</span>
       </button>
-      <button class="theme-toggle" id="themeToggle" aria-label="切換淺色／深色主題" title="切換淺色／深色主題">
-        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="4.2"/>
-          <line x1="12" y1="2" x2="12" y2="4.8"/>
-          <line x1="12" y1="19.2" x2="12" y2="22"/>
-          <line x1="4.2" y1="4.2" x2="6.1" y2="6.1"/>
-          <line x1="17.9" y1="17.9" x2="19.8" y2="19.8"/>
-          <line x1="2" y1="12" x2="4.8" y2="12"/>
-          <line x1="19.2" y1="12" x2="22" y2="12"/>
-          <line x1="4.2" y1="19.8" x2="6.1" y2="17.9"/>
-          <line x1="17.9" y1="6.1" x2="19.8" y2="4.2"/>
-        </svg>
-        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/>
-        </svg>
-      </button>
     </div>
   </div>
-  <div class="pagetabs" id="pagetabs" role="tablist" aria-label="分頁">
-    <button class="pagetab active" data-page="intro" role="tab" aria-selected="true">導言</button>
-    <button class="pagetab" data-page="districts" role="tab" aria-selected="false">紐倫堡城區結構與生活</button>
-    <button class="pagetab" data-page="uneven" role="tab" aria-selected="false">不名譽者考察</button>
-    <button class="pagetab" data-page="climate" role="tab" aria-selected="false">四季氣候</button>
-    <button class="pagetab" data-page="monastery" role="tab" aria-selected="false">修道院與相關人員</button>
-    <button class="pagetab" data-page="food" role="tab" aria-selected="false">飲食</button>
-    <button class="pagetab" data-page="herbs" role="tab" aria-selected="false">草藥、礦石</button>
+  <div class="pagetabs" id="pagetabs">
+    <button class="pagetabs-trigger" id="pagetabsTrigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="pagetabsMenu">
+      <span id="pagetabsCurrentLabel">導言</span>
+      <svg class="pagetabs-trigger-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </button>
+    <div class="pagetabs-menu" id="pagetabsMenu" role="listbox" aria-label="分頁選單">
+      <button class="pagetab active" data-page="intro" role="option" aria-selected="true">導言</button>
+      <button class="pagetab" data-page="districts" role="option" aria-selected="false">紐倫堡城區結構與生活</button>
+      <button class="pagetab" data-page="uneven" role="option" aria-selected="false">不名譽者考察</button>
+      <button class="pagetab" data-page="climate" role="option" aria-selected="false">四季氣候</button>
+      <button class="pagetab" data-page="monastery" role="option" aria-selected="false">修道院與相關人員</button>
+      <button class="pagetab" data-page="food" role="option" aria-selected="false">飲食</button>
+      <button class="pagetab" data-page="herbs" role="option" aria-selected="false">草藥、礦石</button>
+    </div>
   </div>
   <div class="filterbox-inline" id="filterboxInline" role="group" aria-label="篩選標記">
     <div class="seg" id="filterSeg">
@@ -670,8 +579,7 @@
       <div class="claim verified">
         <span class="tagchip verified"><span class="dot"></span>已查證</span>
         <p><b>賠償金差別待遇：</b>約 1320 年的海德堡插圖手稿留下一句刺人的規定，樂師與其他「無權者」
-        （rechtlose Leute）若遭傷害，能討回的賠償僅有：</p>
-        <blockquote>在陽光下打加害者投在牆上的影子。</blockquote>
+        （rechtlose Leute）若遭傷害，能討回的賠償僅有：<b>在陽光下打加害者投在牆上的影子。</b></p>
       </div>
 
       <div class="claim verified">
@@ -774,7 +682,7 @@
 
       <details class="mini-accordion">
         <summary>
-          <span>黑話詞彙表</span>
+          <span>📖黑話詞彙表</span>
           <span class="refs-toggle"><span class="when-closed">展開 ＋</span><span class="when-open">收合 −</span></span>
         </summary>
         <div class="mini-accordion-body">
@@ -1356,7 +1264,7 @@
         <table class="compare">
           <thead><tr><th>設施</th><th>功能</th></tr></thead>
           <tbody>
-            <tr><td>藥草園(Herb Garden)</td><td>栽培醫療與烹飪用藥草，具體種植清單多為9世紀史料<span class="table-infer">〔推論：15世紀是否維持相同植物配置尚待查證〕</span></td></tr>
+            <tr><td>藥草園(Herb Garden)</td><td>栽培醫療與烹飪用藥草</td></tr>
             <tr><td>醫師之家、藥房</td><td>修道院醫療體系核心</td></tr>
             <tr><td>放血房</td><td>中世紀常見放血療法專屬空間</td></tr>
             <tr><td>醫務室、新入會修士宿舍</td><td>與主迴廊區隔開，獨立照護</td></tr>
@@ -1397,12 +1305,12 @@
       <h2><span class="num">02</span>常駐修道院者與職務</h2>
       <div class="chapter-rule"></div>
 
-      <ul class="role-grid">
-        <li class="role-card"><span class="role-name">抄寫僧/書記官(Schreiber)</span><p class="role-desc">抄寫室固定人員，負責典籍謄抄。15世紀部分修道院對外承接付費抄寫業務</p></li>
-        <li class="role-card"><span class="role-name">公證人(Notar/Notarius)</span><p class="role-desc">負責修道院產權文書、租約、買賣契約。15世紀上半葉起，教士書記逐漸被世俗書記取代</p></li>
-        <li class="role-card"><span class="role-name">修道院內部行政人員(如莊園總管)</span><p class="role-desc">管理莊園農場(Grangien)、什一稅收取、帳冊記錄</p></li>
-        <li class="role-card"><span class="role-name">醫師</span><p class="role-desc">駐於藥房、醫務室區域</p></li>
-        <li class="role-card"><span class="role-name">釀酒師、磨坊工、鐵匠等技術工</span><p class="role-desc">農業畜牧、日常庶務（膳食洗衣、對外接待等）。原由輔理修士(Laienbruder)擔任，15世紀漸由雇傭勞工取代</p></li>
+      <ul class="info-card-list grid">
+        <li class="info-card"><span class="info-card-title tight">抄寫僧/書記官(Schreiber)</span><p class="info-card-value">抄寫室固定人員，負責典籍謄抄。15世紀部分修道院對外承接付費抄寫業務</p></li>
+        <li class="info-card"><span class="info-card-title tight">公證人(Notar/Notarius)</span><p class="info-card-value">負責修道院產權文書、租約、買賣契約。15世紀上半葉起，教士書記逐漸被世俗書記取代</p></li>
+        <li class="info-card"><span class="info-card-title tight">修道院內部行政人員(如莊園總管)</span><p class="info-card-value">管理莊園農場(Grangien)、什一稅收取、帳冊記錄</p></li>
+        <li class="info-card"><span class="info-card-title tight">醫師</span><p class="info-card-value">駐於藥房、醫務室區域</p></li>
+        <li class="info-card"><span class="info-card-title tight">釀酒師、磨坊工、鐵匠等技術工</span><p class="info-card-value">農業畜牧、日常庶務（膳食洗衣、對外接待等）。原由輔理修士(Laienbruder)擔任，15世紀漸由雇傭勞工取代</p></li>
       </ul>
     </section>
 
@@ -1429,8 +1337,8 @@
           <tbody>
             <tr><td>居住型態</td><td>鄉間封閉式修道院(Kloster)，終身不出</td><td>城市會院(Konvent)，經常外出巡迴</td></tr>
             <tr><td>生活模式</td><td>祈禱+勞動+封閉內省</td><td>流浪傳教+公開審判+城市佈道</td></tr>
-            <tr><td>建築邏輯</td><td>對應本手冊第一節之聖加侖式配置</td><td>建築配置與本手冊第一節不完全相同，城市會院型態<span class="table-infer">〔推論：具體差異待補充研究〕</span></td></tr>
-            <tr><td>異端審判官出現機率</td><td>低(僅特殊情況造訪)</td><td>高(此為其本職)</td></tr>
+            <tr><td>建築邏輯</td><td>對應聖加侖式配置</td><td>與聖加侖式配置不完全相同，城市會院型態</td></tr>
+            <tr><td>異端審判官出現機率</td><td>低，僅特殊情況造訪</td><td>高，此為其本職</td></tr>
           </tbody>
         </table>
       </div>
@@ -1887,38 +1795,39 @@
       <blockquote>整理自現代植物化學／藥草學資料，非中世紀原典直接記載。</blockquote>
 
       <h4 class="mini-head">通用採收守則</h4>
-      <p>挑乾燥、晴朗的天氣採收（雨後或潮濕天氣採的藥草易發霉）；使用乾淨、鋒利的工具（採葉花用剪刀，挖根用小鏟），避免壓傷植株組織。</p>
+      <p>挑乾燥、晴朗的天氣採收（雨後或潮濕天氣採的藥草易發霉）</p>
+      <p>使用乾淨、鋒利的工具（採葉花用剪刀，挖根用小鏟），避免壓傷植株組織。</p>
 
-      <ul class="harvest-grid">
-        <li class="harvest-card">
-          <span class="harvest-part">根部</span>
-          <div class="harvest-field"><span class="field-label">採收時機</span><p class="field-value">早春(地上部尚未發育前)或深秋(地上部枯萎後)，當日則在日出前</p></div>
-          <div class="harvest-field"><span class="field-label">原因</span><p class="field-value">養分於夜間退回根部儲存，日出後開始往上輸送</p></div>
+      <ul class="info-card-list grid">
+        <li class="info-card">
+          <span class="info-card-title">根部</span>
+          <div class="info-card-field"><span class="info-card-label">採收時機</span><p class="info-card-value">早春(地上部尚未發育前)或深秋(地上部枯萎後)，當日則在日出前</p></div>
+          <div class="info-card-field"><span class="info-card-label">原因</span><p class="info-card-value">養分於夜間退回根部儲存，日出後開始往上輸送</p></div>
         </li>
-        <li class="harvest-card">
-          <span class="harvest-part">葉片</span>
-          <div class="harvest-field"><span class="field-label">採收時機</span><p class="field-value">開花前至初花期，當日則接近正午</p></div>
-          <div class="harvest-field"><span class="field-label">原因</span><p class="field-value">葉片精油/有效成分濃度最高，過早或過晚採收易流失揮發性成分</p></div>
+        <li class="info-card">
+          <span class="info-card-title">葉片</span>
+          <div class="info-card-field"><span class="info-card-label">採收時機</span><p class="info-card-value">開花前至初花期，當日則接近正午</p></div>
+          <div class="info-card-field"><span class="info-card-label">原因</span><p class="info-card-value">葉片精油/有效成分濃度最高，過早或過晚採收易流失揮發性成分</p></div>
         </li>
-        <li class="harvest-card">
-          <span class="harvest-part">花朵</span>
-          <div class="harvest-field"><span class="field-label">採收時機</span><p class="field-value">花朵完全綻放時。依品種不同，一日中的開花時辰也不同</p></div>
-          <div class="harvest-field"><span class="field-label">原因</span><p class="field-value">完全展開時養分與香氣最盛</p></div>
+        <li class="info-card">
+          <span class="info-card-title">花朵</span>
+          <div class="info-card-field"><span class="info-card-label">採收時機</span><p class="info-card-value">花朵完全綻放時。依品種不同，一日中的開花時辰也不同</p></div>
+          <div class="info-card-field"><span class="info-card-label">原因</span><p class="info-card-value">完全展開時養分與香氣最盛</p></div>
         </li>
-        <li class="harvest-card">
-          <span class="harvest-part">樹皮</span>
-          <div class="harvest-field"><span class="field-label">採收時機</span><p class="field-value">春季，樹液流動最旺盛時</p></div>
-          <div class="harvest-field"><span class="field-label">原因</span><p class="field-value">最容易剝離，汁液也最飽滿</p></div>
+        <li class="info-card">
+          <span class="info-card-title">樹皮</span>
+          <div class="info-card-field"><span class="info-card-label">採收時機</span><p class="info-card-value">春季，樹液流動最旺盛時</p></div>
+          <div class="info-card-field"><span class="info-card-label">原因</span><p class="info-card-value">最容易剝離，汁液也最飽滿</p></div>
         </li>
-        <li class="harvest-card">
-          <span class="harvest-part">種子</span>
-          <div class="harvest-field"><span class="field-label">採收時機</span><p class="field-value">完全成熟後；當日則在正午前後</p></div>
-          <div class="harvest-field"><span class="field-label">原因</span><p class="field-value">種子內有效成分達到高峰</p></div>
+        <li class="info-card">
+          <span class="info-card-title">種子</span>
+          <div class="info-card-field"><span class="info-card-label">採收時機</span><p class="info-card-value">完全成熟後；當日則在正午前後</p></div>
+          <div class="info-card-field"><span class="info-card-label">原因</span><p class="info-card-value">種子內有效成分達到高峰</p></div>
         </li>
-        <li class="harvest-card">
-          <span class="harvest-part">果實</span>
-          <div class="harvest-field"><span class="field-label">採收時機</span><p class="field-value">接近完全成熟，但採收後立即攤平薄層乾燥</p></div>
-          <div class="harvest-field"><span class="field-label">原因</span><p class="field-value">避免發霉，同時保留藥效與發芽力（若需留種）</p></div>
+        <li class="info-card">
+          <span class="info-card-title">果實</span>
+          <div class="info-card-field"><span class="info-card-label">採收時機</span><p class="info-card-value">接近完全成熟，但採收後立即攤平薄層乾燥</p></div>
+          <div class="info-card-field"><span class="info-card-label">原因</span><p class="info-card-value">避免發霉，同時保留藥效與發芽力（若需留種）</p></div>
         </li>
       </ul>
     </section>
@@ -1927,40 +1836,40 @@
       <h2><span class="num">07</span>附錄3：修道院體系與世俗治療者的差異</h2>
       <div class="chapter-rule"></div>
 
-      <ul class="compare-stack">
-        <li class="compare-card">
-          <span class="compare-aspect">知識來源</span>
-          <div class="compare-cols">
-            <div><span class="field-label">修道院</span><p class="field-value">抄寫、研讀古典醫學文獻（因具識字能力）</p></div>
-            <div><span class="field-label">世俗</span><p class="field-value">家族口傳，經驗代代相傳，文字紀錄少</p></div>
+      <ul class="info-card-list stack">
+        <li class="info-card">
+          <span class="info-card-title">知識來源</span>
+          <div class="info-card-cols">
+            <div><span class="info-card-label">修道院</span><p class="info-card-value">抄寫、研讀古典醫學文獻（因具識字能力）</p></div>
+            <div><span class="info-card-label">世俗</span><p class="info-card-value">家族口傳，經驗代代相傳，文字紀錄少</p></div>
           </div>
         </li>
-        <li class="compare-card">
-          <span class="compare-aspect">角色分工</span>
-          <div class="compare-cols">
-            <div><span class="field-label">修道院</span><p class="field-value">早期一人身兼數職，後期改為專業分工：herbarius（藥草園管理者)→ pigmentarius（修道院藥房負責人，負責調劑）→ phlebotomator（放血專責者）</p></div>
-            <div><span class="field-label">世俗</span><p class="field-value">分工鬆散，依地區與需求而定</p></div>
+        <li class="info-card">
+          <span class="info-card-title">角色分工</span>
+          <div class="info-card-cols">
+            <div><span class="info-card-label">修道院</span><p class="info-card-value">早期一人身兼數職，後期改為專業分工：herbarius（藥草園管理者)→ pigmentarius（修道院藥房負責人，負責調劑）→ phlebotomator（放血專責者）</p></div>
+            <div><span class="info-card-label">世俗</span><p class="info-card-value">分工鬆散，依地區與需求而定</p></div>
           </div>
         </li>
-        <li class="compare-card">
-          <span class="compare-aspect">社會地位</span>
-          <div class="compare-cols">
-            <div><span class="field-label">修道院</span><p class="field-value">較高，屬於「內科」性質的照護</p></div>
-            <div><span class="field-label">世俗</span><p class="field-value">依職業不同有所差異：草藥女士 Kräuterfrau優於外科醫師 Wundarzt與理髮師 Bader等市集流動執業者</p></div>
+        <li class="info-card">
+          <span class="info-card-title">社會地位</span>
+          <div class="info-card-cols">
+            <div><span class="info-card-label">修道院</span><p class="info-card-value">較高，屬於「內科」性質的照護</p></div>
+            <div><span class="info-card-label">世俗</span><p class="info-card-value">依職業不同有所差異：草藥女士 Kräuterfrau優於外科醫師 Wundarzt與理髮師 Bader等市集流動執業者</p></div>
           </div>
         </li>
-        <li class="compare-card">
-          <span class="compare-aspect">訓練方式</span>
-          <div class="compare-cols">
-            <div><span class="field-label">修道院</span><p class="field-value">修道院內研習+抄本傳承</p></div>
-            <div><span class="field-label">世俗</span><p class="field-value">學徒制（理髮外科）或家族傳承（藥草女士）</p></div>
+        <li class="info-card">
+          <span class="info-card-title">訓練方式</span>
+          <div class="info-card-cols">
+            <div><span class="info-card-label">修道院</span><p class="info-card-value">修道院內研習+抄本傳承</p></div>
+            <div><span class="info-card-label">世俗</span><p class="info-card-value">學徒制（理髮外科）或家族傳承（藥草女士）</p></div>
           </div>
         </li>
-        <li class="compare-card">
-          <span class="compare-aspect">業務範圍</span>
-          <div class="compare-cols">
-            <div><span class="field-label">修道院</span><p class="field-value">側重藥草療法、飲食調養、預防保健、病患照護</p></div>
-            <div><span class="field-label">世俗</span><p class="field-value">放血、拔牙、正骨、白內障手術多由Bader/Wundarzt負責；藥草知識、接生則多由女性治療者負責</p></div>
+        <li class="info-card">
+          <span class="info-card-title">業務範圍</span>
+          <div class="info-card-cols">
+            <div><span class="info-card-label">修道院</span><p class="info-card-value">側重藥草療法、飲食調養、預防保健、病患照護</p></div>
+            <div><span class="info-card-label">世俗</span><p class="info-card-value">放血、拔牙、正骨、白內障手術多由Bader/Wundarzt負責；藥草知識、接生則多由女性治療者負責</p></div>
           </div>
         </li>
       </ul>
@@ -2015,49 +1924,46 @@
 
 <script>
 (function(){
-  /* ---------- 淺色／深色主題手動切換 ---------- */
-  var themeToggle = document.getElementById('themeToggle');
-  var root = document.documentElement;
-
-  function getEffectiveTheme(){
-    var attr = root.getAttribute('data-theme');
-    if(attr === 'light' || attr === 'dark') return attr;
-    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-  }
-  function setTheme(theme){
-    root.setAttribute('data-theme', theme);
-    try{ localStorage.setItem('theme-pref', theme); }catch(e){}
-  }
-  try{
-    var stored = localStorage.getItem('theme-pref');
-    if(stored === 'light' || stored === 'dark'){ root.setAttribute('data-theme', stored); }
-  }catch(e){}
-  if(themeToggle){
-    themeToggle.addEventListener('click', function(){
-      setTheme(getEffectiveTheme() === 'dark' ? 'light' : 'dark');
-    });
-  }
-
   var menuBtn = document.getElementById('menuBtn');
   var panel = document.getElementById('navPanel');
   var backdrop = document.getElementById('backdrop');
+  var pagetabsWrap = document.getElementById('pagetabs');
+  var pagetabsTrigger = document.getElementById('pagetabsTrigger');
 
+  function closePanel(){
+    panel.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded','false');
+    if(!pagetabsWrap.classList.contains('open')) backdrop.classList.remove('show');
+  }
   function openPanel(){
+    closePagetabsMenu();
     panel.classList.add('open');
     backdrop.classList.add('show');
     menuBtn.setAttribute('aria-expanded','true');
   }
-  function closePanel(){
-    panel.classList.remove('open');
-    backdrop.classList.remove('show');
-    menuBtn.setAttribute('aria-expanded','false');
+  function closePagetabsMenu(){
+    pagetabsWrap.classList.remove('open');
+    pagetabsTrigger.setAttribute('aria-expanded','false');
+    if(!panel.classList.contains('open')) backdrop.classList.remove('show');
+  }
+  function openPagetabsMenu(){
+    closePanel();
+    pagetabsWrap.classList.add('open');
+    backdrop.classList.add('show');
+    pagetabsTrigger.setAttribute('aria-expanded','true');
   }
   menuBtn.addEventListener('click', function(){
     if(panel.classList.contains('open')) closePanel(); else openPanel();
   });
-  backdrop.addEventListener('click', closePanel);
+  pagetabsTrigger.addEventListener('click', function(){
+    if(pagetabsWrap.classList.contains('open')) closePagetabsMenu(); else openPagetabsMenu();
+  });
+  backdrop.addEventListener('click', function(){
+    closePanel();
+    closePagetabsMenu();
+  });
   document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') closePanel();
+    if(e.key === 'Escape'){ closePanel(); closePagetabsMenu(); }
   });
 
   var buttons = document.querySelectorAll('#filterSeg button');
@@ -2078,6 +1984,7 @@
   var pageEls = {};
   document.querySelectorAll('.page').forEach(function(p){ pageEls[p.getAttribute('data-page')] = p; });
   var pageTabs = Array.prototype.slice.call(document.querySelectorAll('.pagetab'));
+  var pagetabsCurrentLabel = document.getElementById('pagetabsCurrentLabel');
   var filterboxInline = document.getElementById('filterboxInline');
   var tocLists = {};
   document.querySelectorAll('nav.toc[data-toc-for]').forEach(function(n){ tocLists[n.getAttribute('data-toc-for')] = n; });
@@ -2109,6 +2016,7 @@
       var active = tab.getAttribute('data-page') === id;
       tab.classList.toggle('active', active);
       tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      if(active && pagetabsCurrentLabel){ pagetabsCurrentLabel.textContent = tab.textContent; }
     });
     Object.keys(tocLists).forEach(function(key){
       tocLists[key].hidden = (key !== id);
@@ -2120,8 +2028,13 @@
       menuBtn.style.display = PAGES_WITH_TOC[id] ? '' : 'none';
     }
     closePanel();
+    closePagetabsMenu();
     if(!opts.keepHash){
-      history.replaceState(null, '', '#p-' + id);
+      try{
+        history.replaceState(null, '', '#p-' + id);
+      }catch(e){
+        /* 某些沙盒環境（如預覽用的 srcdoc iframe）不允許改寫網址，安全忽略 */
+      }
     }
     if(!opts.keepScroll){
       window.scrollTo(0, 0);
