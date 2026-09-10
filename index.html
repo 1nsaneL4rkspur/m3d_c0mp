@@ -76,13 +76,6 @@
     color:var(--ink); font-weight:700; text-transform:none; white-space:nowrap;
     overflow:hidden; text-overflow:ellipsis;
   }
-  .filterbox-inline{
-    padding:9px clamp(14px,4vw,24px); border-bottom:1px solid var(--rule); background:var(--bg);
-  }
-  .filterbox-inline .seg{ gap:6px; flex-wrap:wrap; }
-  .filterbox-inline .seg button{
-    padding:5px 11px; font-size:9.5px; gap:5px;
-  }
   .menu-btn{
     flex:none; height:32px; border-radius:8px; border:1px solid var(--rule-strong);
     background:var(--surface); cursor:pointer; padding:0 13px; box-shadow:var(--shadow);
@@ -118,26 +111,6 @@
     opacity:0; pointer-events:none; transition:opacity .25s ease;
   }
   .backdrop.show{ opacity:1; pointer-events:auto; }
-
-  .filterbox{ border:1px solid var(--rule); background:var(--surface); border-radius:8px; padding:12px; box-shadow:var(--shadow); }
-  .filterbox .label{
-    font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.12em;
-    color:var(--ink-faint); text-transform:uppercase; margin-bottom:8px; display:block;
-  }
-  .seg{ display:flex; flex-wrap:wrap; gap:6px; }
-  .seg button{
-    font-family:"IBM Plex Mono",monospace; font-size:11px;
-    padding:7px 12px; border-radius:7px; border:1px solid var(--rule-strong);
-    background:var(--surface); color:var(--ink-soft); cursor:pointer;
-    display:flex; align-items:center; gap:8px; transition:all .15s ease;
-  }
-  .seg button .dot{ width:7px;height:7px;border-radius:50%; flex:none; border:1px solid var(--rule-strong); }
-  .seg button[data-mode="verified"] .dot{ background:var(--verified); border-color:var(--verified); }
-  .seg button[data-mode="inference"] .dot{ background:var(--inference); border-color:var(--inference); }
-  .seg button[data-mode="all"] .dot{ background:var(--ink-faint); border-color:var(--ink-faint); }
-  .seg button:hover{ border-color:var(--ink-faint); }
-  .seg button.active{ background:var(--ink); color:var(--bg); font-weight:600; border-color:var(--ink); }
-  .seg button.active .dot{ border-color:var(--bg); }
 
   nav.toc{ display:flex; flex-direction:column; gap:2px; font-size:12.5px; }
   nav.toc[hidden]{ display:none !important; }
@@ -209,7 +182,6 @@
     border:1px solid var(--rule);
     background:var(--surface);
     box-shadow:var(--shadow);
-    transition: opacity .25s ease, filter .25s ease;
   }
   .claim > :last-child{ margin-bottom:0; }
   .claim.verified{ border-left:3px solid var(--verified-border); }
@@ -224,11 +196,6 @@
   .tagchip.verified .dot{ background:var(--verified); }
   .tagchip.inference{ background:var(--inference-bg); color:var(--inference); }
   .tagchip.inference .dot{ background:var(--inference); }
-
-  body.mode-verified .claim.inference,
-  body.mode-inference .claim.verified{
-    opacity:.25; filter:saturate(.3);
-  }
 
   blockquote{
     margin:0 0 18px; padding:2px 0 2px 16px; border-left:2px solid var(--rule-strong);
@@ -323,7 +290,7 @@
     background:var(--accent); border-radius:2px; opacity:.55;
   }
   .info-card .info-card-title{
-    display:block; font-family:"IBM Plex Mono",monospace; font-size:11.5px;
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:13.5px;
     letter-spacing:.02em; color:var(--accent); margin-bottom:8px; font-weight:600;
   }
   .info-card .info-card-title.tight{ margin-bottom:5px; }
@@ -333,7 +300,7 @@
     display:grid; grid-template-columns:1fr 1fr; gap:14px;
   }
   .info-card .info-card-label{
-    display:block; font-family:"IBM Plex Mono",monospace; font-size:9px;
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:12px;
     letter-spacing:.1em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:2px;
   }
   .info-card .info-card-value{ margin:0; color:var(--ink-soft); }
@@ -437,18 +404,12 @@
     <div class="pagetabs-menu" id="pagetabsMenu" role="listbox" aria-label="分頁選單">
       <button class="pagetab active" data-page="intro" role="option" aria-selected="true">導言</button>
       <button class="pagetab" data-page="districts" role="option" aria-selected="false">紐倫堡城區結構與生活</button>
+      <button class="pagetab" data-page="commerce" role="option" aria-selected="false">帝國城市政治與商業</button>
       <button class="pagetab" data-page="uneven" role="option" aria-selected="false">不名譽者考察</button>
       <button class="pagetab" data-page="climate" role="option" aria-selected="false">四季氣候</button>
       <button class="pagetab" data-page="monastery" role="option" aria-selected="false">修道院與相關人員</button>
       <button class="pagetab" data-page="food" role="option" aria-selected="false">飲食</button>
       <button class="pagetab" data-page="herbs" role="option" aria-selected="false">草藥、礦石</button>
-    </div>
-  </div>
-  <div class="filterbox-inline" id="filterboxInline" role="group" aria-label="篩選標記">
-    <div class="seg" id="filterSeg">
-      <button data-mode="all" class="active" title="全部顯示"><span class="dot"></span>全部</button>
-      <button data-mode="verified" title="只看已查證"><span class="dot"></span>已查證</button>
-      <button data-mode="inference" title="只看推論"><span class="dot"></span>推論</button>
     </div>
   </div>
   <div class="navpanel" id="navPanel">
@@ -458,10 +419,7 @@
       <nav class="toc" id="toc-uneven" data-toc-for="uneven" hidden>
         <a href="#ch1">一、不名譽者制度</a>
         <a href="#ch2">二、流浪樂師的生活</a>
-        <a href="#ch3">三、三地個別考察</a>
-        <a href="#frankfurt" class="sub">— 法蘭克福</a>
-        <a href="#wurzburg" class="sub">— 烏茲堡</a>
-        <a href="#nuremberg" class="sub">— 紐倫堡</a>
+        <a href="#ch3">三、紐倫堡個案</a>
         <a href="#ch4">四、宗教人士的態度</a>
         <a href="#refs">參考來源</a>
       </nav>
@@ -470,7 +428,17 @@
         <a href="#d-ch2">二、市中心與市場</a>
         <a href="#d-ch3">三、街區與居民分布</a>
         <a href="#d-ch4">四、工匠詩人與市民文化</a>
+        <a href="#d-ch5">五、附錄：法蘭克福與烏茲堡速寫</a>
+        <a href="#frankfurt" class="sub">— 法蘭克福</a>
+        <a href="#wurzburg" class="sub">— 烏茲堡</a>
         <a href="#d-refs">參考來源</a>
+      </nav>
+      <nav class="toc" id="toc-commerce" data-toc-for="commerce" hidden>
+        <a href="#cm-ch1">一、帝國城市的權力結構</a>
+        <a href="#cm-ch2">二、商人取得政治權力的路徑</a>
+        <a href="#cm-ch3">三、商人家族檔案</a>
+        <a href="#cm-ch4">四、漢薩同盟貿易網絡</a>
+        <a href="#cm-refs">參考來源</a>
       </nav>
       <nav class="toc" id="toc-climate" data-toc-for="climate" hidden>
         <a href="#c-ch1">一、氣候概況</a>
@@ -533,7 +501,11 @@
         </a>
         <a class="page-index-item" href="#p-districts">
           <span class="page-index-title">紐倫堡城區結構與生活</span>
-          <span class="page-index-desc">城區劃分、市集、街區生活</span>
+          <span class="page-index-desc">城區劃分、市集、街區生活、法蘭克福與烏茲堡速寫附錄</span>
+        </a>
+        <a class="page-index-item" href="#p-commerce">
+          <span class="page-index-title">帝國城市政治與商業</span>
+          <span class="page-index-desc">城市權力結構、商人政治路徑、家族檔案、漢薩貿易網絡</span>
         </a>
         <a class="page-index-item" href="#p-uneven">
           <span class="page-index-title">不名譽者考察</span>
@@ -766,49 +738,8 @@
     </section>
 
     <section class="chapter" id="ch3">
-      <h2><span class="num">03</span>三地個別考察</h2>
+      <h2><span class="num">03</span>紐倫堡個案：具體規範記錄</h2>
       <div class="chapter-rule"></div>
-
-      <h3 class="sub-head" id="frankfurt">法蘭克福 Frankfurt am Main <span class="tag-city">Reichsstadt · 博覽會城市</span></h3>
-
-      <div class="claim verified">
-        <span class="tagchip verified"><span class="dot"></span>已查證</span>
-        <p>法蘭克福是帝國自由城市，靠春秋兩季的大博覽會撐起繁華，也是選帝侯選皇帝的傳統會場，1356 年
-        《金璽詔書》定下的規矩。1454 年秋天，君士坦丁堡淪陷（1453 年）的震撼還沒退去，帝國會議齊聚法蘭克福
-        商討「土耳其戰爭援助」（Reichstürkenhilfe），諸侯使節帶著隨員蜂擁而至。這場會議離 1458 年只有四年，
-        大致能想見當時法蘭克福的樣子：人潮擁擠，五湖四海的口音混雜街頭。</p>
-      </div>
-
-      <div class="claim inference">
-        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
-        <p>法蘭克福作為固定舉辦大型博覽會與帝國會議的城市，理應是流浪樂師聚集謀生的熱點。
-        人潮聚集之處，就是賞錢與聽眾所在。這類商貿大城通常也設有較嚴格的旅店管理與治安規範，流浪樂師的活動空間很可能
-        因此受到限制，例如被要求登記或只能在特定區域表演。（推測依據同類城市慣例，
-        法蘭克福當地具體法規尚待查證。）</p>
-      </div>
-
-      <h3 class="sub-head" id="wurzburg">烏茲堡 Würzburg <span class="tag-city">Hochstift · 采邑主教轄區</span></h3>
-
-      <div class="claim verified">
-        <span class="tagchip verified"><span class="dot"></span>已查證</span>
-        <p>烏茲堡的核心身分是采邑主教轄區（Hochstift Würzburg），名義上歸美因茲總主教管，
-        實權卻握在烏茲堡采邑主教（Fürstbischof）手裡，他既是世俗諸侯，也是教會領袖。這種「教會諸侯國」
-        （geistliches Fürstentum）的治理方式，意味著這裡的世俗規矩與教會規矩常常是同一套，
-        甚至出自同一個人之手。</p>
-      </div>
-
-      <div class="claim inference">
-        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
-        <p>由於統治者身兼主教，烏茲堡對「不名譽者」的判定，很可能比一般世俗自由城市更貼近教會的道德立場，
-        對演藝維生者的評價未必寬鬆。另一方面，主教座堂城市慶典與朝聖活動多，樂師的生意在宗教城市充滿矛盾，
-        道德上被質疑、實務上卻離不開。</p>
-        <p class="remark"><b>備註：</b>從其他教會轄區類推而來，烏茲堡本地的直接記載尚未查得。</p>
-      </div>
-
-      <div class="notice" style="margin-top:0;">
-        若想深挖烏茲堡在地史料，可參閱《歷史辭典巴伐利亞》（Historisches Lexikon Bayerns）的
-        「Würzburg, Hochstift: Verwaltung」條目、以及烏茲堡教區史的德文檔案。
-      </div>
 
       <h3 class="sub-head" id="nuremberg">紐倫堡 Nuremberg <span class="tag-city">Reichsstadt · 樂器製造重鎮</span></h3>
 
@@ -1108,10 +1039,56 @@
       則社會地位會明顯偏低，一般市民會對其保持距離。</p>
     </section>
 
+    <section class="chapter" id="d-ch5">
+      <h2><span class="num">05</span>附錄：法蘭克福與烏茲堡速寫</h2>
+      <div class="chapter-rule"></div>
+
+      <h3 class="sub-head" id="frankfurt">法蘭克福 Frankfurt am Main <span class="tag-city">Reichsstadt · 博覽會城市</span></h3>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>法蘭克福是帝國自由城市，靠春秋兩季的大博覽會撐起繁華，也是選帝侯選皇帝的傳統會場，1356 年
+        《金璽詔書》定下的規矩。1454 年秋天，君士坦丁堡淪陷（1453 年）的震撼還沒退去，帝國會議齊聚法蘭克福
+        商討「土耳其戰爭援助」（Reichstürkenhilfe），諸侯使節帶著隨員蜂擁而至。這場會議離 1458 年只有四年，
+        大致能想見當時法蘭克福的樣子：人潮擁擠，五湖四海的口音混雜街頭。</p>
+      </div>
+
+      <div class="claim inference">
+        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
+        <p>法蘭克福作為固定舉辦大型博覽會與帝國會議的城市，理應是流浪樂師聚集謀生的熱點。
+        人潮聚集之處，就是賞錢與聽眾所在。這類商貿大城通常也設有較嚴格的旅店管理與治安規範，流浪樂師的活動空間很可能
+        因此受到限制，例如被要求登記或只能在特定區域表演。（推測依據同類城市慣例，
+        法蘭克福當地具體法規尚待查證。）</p>
+      </div>
+
+      <h3 class="sub-head" id="wurzburg">烏茲堡 Würzburg <span class="tag-city">Hochstift · 采邑主教轄區</span></h3>
+
+      <div class="claim verified">
+        <span class="tagchip verified"><span class="dot"></span>已查證</span>
+        <p>烏茲堡的核心身分是采邑主教轄區（Hochstift Würzburg），名義上歸美因茲總主教管，
+        實權卻握在烏茲堡采邑主教（Fürstbischof）手裡，他既是世俗諸侯，也是教會領袖。這種「教會諸侯國」
+        （geistliches Fürstentum）的治理方式，意味著這裡的世俗規矩與教會規矩常常是同一套，
+        甚至出自同一個人之手。</p>
+      </div>
+
+      <div class="claim inference">
+        <span class="tagchip inference"><span class="dot"></span>推論／待補強</span>
+        <p>由於統治者身兼主教，烏茲堡對「不名譽者」的判定，很可能比一般世俗自由城市更貼近教會的道德立場，
+        對演藝維生者的評價未必寬鬆。另一方面，主教座堂城市慶典與朝聖活動多，樂師的生意在宗教城市充滿矛盾，
+        道德上被質疑、實務上卻離不開。</p>
+        <p class="remark"><b>備註：</b>從其他教會轄區類推而來，烏茲堡本地的直接記載尚未查得。</p>
+      </div>
+
+      <div class="notice" style="margin-top:0;">
+        若想深挖烏茲堡在地史料，可參閱《歷史辭典巴伐利亞》（Historisches Lexikon Bayerns）的
+        「Würzburg, Hochstift: Verwaltung」條目、以及烏茲堡教區史的德文檔案。
+      </div>
+    </section>
+
     <section class="chapter" id="d-refs">
       <details class="refs-details">
         <summary>
-          <h2><span class="num">05</span>參考來源</h2>
+          <h2><span class="num">06</span>參考來源</h2>
           <span class="refs-toggle"><span class="when-closed">展開 ＋</span><span class="when-open">收合 −</span></span>
         </summary>
       <div class="chapter-rule"></div>
@@ -1123,6 +1100,283 @@
         <li>Tacke, Andreas / Geis, Ulrike，〈Werkstattproduktion eines Rotschmieds in Nürnberg〉（2011年）</li>
         <li>bavarikon：《Hans Folz, Meisterlieder》手稿描述</li>
         <li>Literaturportal Bayern：〈Hans Rosenplüt〉</li>
+      </ul>
+      </details>
+    </section>
+
+    <div class="colophon">
+      本筆記來源公開網路二手資料（線上百科、歷史辭典條目、通俗史學文章與少量學術論文節錄），無一手檔案或學術專著全文。
+    </div>
+  </div>
+
+  <div class="page" id="page-commerce" data-page="commerce" hidden>
+    <div class="doc-head" id="commerce-overview">
+      <div class="eyebrow">Reichsstadt Archiv · 城市政治與商業</div>
+      <h1 class="title">帝國城市政治與商業</h1>
+
+      <div class="notice">
+        本頁整理帝國自治城市的權力結構、商人取得政治影響力的操作路徑、幾個代表性商人家族的檔案，
+        以及漢薩同盟的貿易網絡，供設計商人、議員或漢薩相關角色背景時參考。
+      </div>
+    </div>
+
+    <section class="chapter" id="cm-ch1">
+      <h2><span class="num">01</span>帝國城市的權力結構</h2>
+      <div class="chapter-rule"></div>
+
+      <h3 class="sub-head">1.1 帝國自治城市分2種類型</h3>
+      <p>帝國境內的自治城市大致可分兩種法律地位而運作邏輯相似。
+      真正的決策權都在小圈子中，並非市民說了算。</p>
+
+      <ul class="info-card-list grid">
+        <li class="info-card">
+          <span class="info-card-title">帝國自由城市（Freie Reichsstadt）</span>
+          <div class="info-card-field"><span class="info-card-label">代表城市</span><p class="info-card-value">呂貝克、漢堡、不來梅</p></div>
+          <div class="info-card-field"><span class="info-card-label">直屬對象</span><p class="info-card-value">僅直屬皇帝，不受地方領主節制</p></div>
+          <div class="info-card-field"><span class="info-card-label">備註</span><p class="info-card-value">正式取得帝國議會（Reichstag）代表權要到1489年，1410–1460年間僅具事實上的自治，尚無制度化代表權</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">帝國城市（Reichsstadt，內陸型）</span>
+          <div class="info-card-field"><span class="info-card-label">代表城市</span><p class="info-card-value">紐倫堡、科隆、奧格斯堡</p></div>
+          <div class="info-card-field"><span class="info-card-label">直屬對象</span><p class="info-card-value">同樣直屬皇帝</p></div>
+          <div class="info-card-field"><span class="info-card-label">備註</span><p class="info-card-value">治理架構通常分表層大議會與核心小議會兩層</p></div>
+        </li>
+      </ul>
+
+      <h3 class="sub-head">1.2 紐倫堡：兩層權力結構</h3>
+
+      <ul class="info-card-list grid">
+        <li class="info-card">
+          <span class="info-card-title">大議會(Größerer Rat / Genannten)</span>
+          <div class="info-card-field"><span class="info-card-label">層級</span><p class="info-card-value">表層</p></div>
+          <div class="info-card-field"><span class="info-card-label">組成</span><p class="info-card-value">可達數百人,含各行會代表</p></div>
+          <div class="info-card-field"><span class="info-card-label">實際功能</span><p class="info-card-value">僅在最重要事務上被知會,象徵性參與</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">內議會(Kleiner Rat)</span>
+          <div class="info-card-field"><span class="info-card-label">層級</span><p class="info-card-value">核心</p></div>
+          <div class="info-card-field"><span class="info-card-label">組成</span><p class="info-card-value">約數十人,世家為主</p></div>
+          <div class="info-card-field"><span class="info-card-label">實際功能</span><p class="info-card-value">真正決策中樞,掌財政、司法、外交</p></div>
+        </li>
+      </ul>
+
+      <p>真正能左右城市決策的，是坐進內議會的世家（Patriziat）。
+      多數大商人不管多有錢，終其一生也只能停在「顯貴階層（Ehrbarkeit）」：具備大議會席位，但摸不到內議會的門。</p>
+
+      <p>想擠進世家圈，大概有三條路（長期制度，非1458年特有〔推論〕）：</p>
+      <ol>
+        <li>累積跨國貿易規模的財富，並維持至少兩代</li>
+        <li>與既有世家聯姻（Konnubium）</li>
+        <li>把握舊世家因絕嗣而釋出名額時被「增補」（kooptation）的機會</li>
+      </ol>
+
+      <p>紐倫堡的世家因為絕嗣問題較嚴重，15世紀陸續增補了22個新家族進議會，但手工業出身者只有Fütterer一家依靠金融與出版業擠進去。</p>
+
+      <div class="plain-card">
+        <p><b>內議會中的關鍵職位：稅務長</b>（Losunger,以紐倫堡為例）<br/>
+        由最資深的世家成員擔任，掌管全城稅收與財政，地位等同城市實質元首。</p>
+      </div>
+
+      <h3 class="sub-head">1.3 漢薩沿海城市：呂貝克法治理架構</h3>
+      <p>波羅的海沿岸約100個城市採用呂貝克法（Lübisches Recht），邏輯跟內陸帝國城市異曲同工，同樣是「終身化的少數精英議會」。</p>
+      <ul>
+        <li><b>組成</b>：議會（Rat）成員從商會裡選出20名議員（Ratsherren）</li>
+        <li><b>任期</b>：名義上2年，實務上近乎終身</li>
+        <li><b>市長</b>：自成員中推選，最多4名，首席市長算是「同儕之首」</li>
+      </ul>
+
+      <h3 class="sub-head">1.4 漢薩議會（Hansetag）：同盟層級的鬆散治理</h3>
+      <ul>
+        <li>同盟最高決策機構，自1356年起不定期於呂貝克召開</li>
+        <li>非強制出席，多數城市時常缺席；同時也未有明確的官方同盟清單</li>
+        <li>決議（Hanserezesse）對個別城市不具強制約束力</li>
+        <li>日常事務高度仰賴呂貝克市議會處理〔推論〕</li>
+      </ul>
+      <p>漢薩議會跟內陸城市的內議會完全是兩回事：內議會是「一座城市內部」的權力核心，漢薩議會則是「多座城市之間」鬆散協調的場域，沒有強制力、沒有常設官僚機構，更接近今日的協商會議而非政府。</p>
+
+      <div class="plain-card">
+        <p>帝國城市的內議會是「寡頭但穩固」的政府<br/>
+        漢薩議會更接近現代的<b>多邊談判</b>，沒有法律強制力、常設行政機關，城市之間的合作自願與呂貝克的居中協調，而非制度性約束。</p>
+      </div>
+
+      <h4 class="mini-head">帝國城市 vs. 漢薩議會差異整理</h4>
+      <p>以具決策權的內議會與漢薩議會對比來說：</p>
+      <ul class="info-card-list stack">
+        <li class="info-card">
+          <span class="info-card-title">運作範圍</span>
+          <div class="info-card-cols">
+            <div><span class="info-card-label">帝國城市（紐倫堡為例）</span><p class="info-card-value">城市內部治理</p></div>
+            <div><span class="info-card-label">漢薩議會</span><p class="info-card-value">跨城市、同盟層級</p></div>
+          </div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">性質</span>
+          <div class="info-card-cols">
+            <div><span class="info-card-label">帝國城市（紐倫堡為例）</span><p class="info-card-value">常設政府機構</p></div>
+            <div><span class="info-card-label">漢薩議會</span><p class="info-card-value">不定期召開的協商會議</p></div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="cm-ch2">
+      <h2><span class="num">02</span>商人取得政治權力的路徑</h2>
+      <div class="chapter-rule"></div>
+
+      <h3 class="sub-head">2.1 內陸路線：三條現實操作模式</h3>
+      <p>一個看起來「只是商人」的角色，要怎麼左右選帝侯、甚至皇帝本人？</p>
+
+      <h4 class="mini-head">路徑一：放款抵押（Verpfändung）</h4>
+      <p>國王、選帝侯、公爵長年財政拮据，慣常做法是把土地、城堡、城市、關稅收入或礦產收益「抵押」給商人換取現金。商人拿到的不是土地所有權，而是該收益的支配權，直到債務清償為止，而債務往往永遠不會被清償。皇帝西吉斯蒙德（在位1433–1437，匈牙利王1387–1437）是這條路上的極端例子，一生反覆抵押王室城市與領地換取現金，規模在同代君主中前所未見〔已成熟制度，長期沿革〔推論〕〕。不過這種抵押不保證獲利：布倫瑞克、呂內堡一帶的城堡抵押案例顯示，維護城堡與駐軍開支經常超過收益，商人或城市反而倒貼。</p>
+
+      <h4 class="mini-head">路徑二：年金/地租買賣（Rentenkauf）</h4>
+      <p>這是城市籌措長期資金最主要的合法工具，教會裁定其不算高利貸，所以商人、貴族、教士都能合法購買。
+      年金分兩種：終身年金（Leibrente）與永久年金（Ewigrente/Erbrente）。
+      15世紀北德城市的年金交易量，是13世紀的四十倍。大量持有一座城市年金的商人，等於把自己的資本結構性地嵌入該城的公共財政，不必有議席，城市每一次財政決策都得考慮到他。</p>
+
+      <h4 class="mini-head">路徑三：特權、徽章與聯姻交換</h4>
+      <p>以財力服務（放款、供應、外交奔走）的報酬是象徵資本：</p>
+      <ul>
+        <li>貴族狀（Adelsbrief）：如伯恩商人 Niklaus von Diesbach，1434年獲皇帝西吉斯蒙德頒發貴族狀</li>
+        <li>徽章（Wappenbrief）：如奧格斯堡 Fugger 家族一支（見下方第三部），1462年獲皇帝腓特烈三世授予徽章</li>
+        <li>聯姻：商人之子娶入鑄幣師、世家或另一大商行之女，是最制度化的身分躍升管道</li>
+      </ul>
+
+      <h3 class="sub-head">2.2 漢薩路線：信用網絡而非放款槓桿</h3>
+      <p>漢薩商人的財富建立在跨海域的信用網絡上，取得影響力的邏輯跟內陸商人明顯不同。
+      好的一面是，綿密的書信與信用往來，讓商人能在完全不用現金的情況下完成跨國貿易；壞的一面是，一旦信用鏈斷裂，後果嚴重。</p>
+    </section>
+
+    <section class="chapter" id="cm-ch3">
+      <h2><span class="num">03</span>商人家族檔案</h2>
+      <div class="chapter-rule"></div>
+
+      <p>以下家族的活躍年代有不同程度的重疊，設計角色背景或NPC時可以參考。</p>
+
+      <ul class="info-card-list grid">
+        <li class="info-card">
+          <span class="info-card-title">Rummel 家族</span>
+          <div class="info-card-field"><span class="info-card-label">據點</span><p class="info-card-value">紐倫堡</p></div>
+          <div class="info-card-field"><span class="info-card-label">活躍高峰</span><p class="info-card-value">約1380–1425</p></div>
+          <div class="info-card-field"><span class="info-card-label">崛起方式</span><p class="info-card-value">放款給多位國王、選帝侯、城伯，換得領地與司法權（血權）</p></div>
+          <div class="info-card-field"><span class="info-card-label">1458年狀態</span><p class="info-card-value">主要人物已於1425年前後過世，可作為「上一代傳奇」的背景故事</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">Stromer-Ortlieb 商行</span>
+          <div class="info-card-field"><span class="info-card-label">據點</span><p class="info-card-value">紐倫堡</p></div>
+          <div class="info-card-field"><span class="info-card-label">活躍高峰</span><p class="info-card-value">約1400–1430</p></div>
+          <div class="info-card-field"><span class="info-card-label">崛起方式</span><p class="info-card-value">造紙業起家，放款給西吉斯蒙德</p></div>
+          <div class="info-card-field"><span class="info-card-label">1458年狀態</span><p class="info-card-value">約1430年因胡斯戰爭、西吉斯蒙德對威尼斯的經濟戰、以及合夥人 Hans Ortlieb 的挪用侵占而破產，可作為「金融神話破滅」的案例</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">Johann Rinck</span>
+          <div class="info-card-field"><span class="info-card-label">據點</span><p class="info-card-value">科隆</p></div>
+          <div class="info-card-field"><span class="info-card-label">活躍高峰</span><p class="info-card-value">1432–1464</p></div>
+          <div class="info-card-field"><span class="info-card-label">崛起方式</span><p class="info-card-value">布商致富→轉投地租與不動產→以行會代表身分進入市議會</p></div>
+          <div class="info-card-field"><span class="info-card-label">1458年狀態</span><p class="info-card-value">正處於政治生涯高峰期，適合作為當代重要NPC原型</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">Diesbach-Watt 商會</span>
+          <div class="info-card-field"><span class="info-card-label">據點</span><p class="info-card-value">伯恩/聖加倫</p></div>
+          <div class="info-card-field"><span class="info-card-label">活躍高峰</span><p class="info-card-value">1420–1460</p></div>
+          <div class="info-card-field"><span class="info-card-label">崛起方式</span><p class="info-card-value">跨國麻布、金屬貿易，合夥人取得貴族狀</p></div>
+          <div class="info-card-field"><span class="info-card-label">1458年狀態</span><p class="info-card-value">商會正走向解散，適合作為「盛極而衰」的當代背景</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">拉芬斯堡大商會</span>
+          <div class="info-card-field"><span class="info-card-label">據點</span><p class="info-card-value">拉芬斯堡</p></div>
+          <div class="info-card-field"><span class="info-card-label">活躍高峰</span><p class="info-card-value">約1380–1530</p></div>
+          <div class="info-card-field"><span class="info-card-label">崛起方式</span><p class="info-card-value">純實體貿易（麻布、棉麻混紡），銀行業務不重，靠貿易規模直接掌控城市市長職位</p></div>
+          <div class="info-card-field"><span class="info-card-label">1458年狀態</span><p class="info-card-value">全盛期，家族成員反覆連任城市長官</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">Fugger 家族</span>
+          <div class="info-card-field"><span class="info-card-label">據點</span><p class="info-card-value">奧格斯堡</p></div>
+          <div class="info-card-field"><span class="info-card-label">活躍高峰</span><p class="info-card-value">此時仍是中型商行</p></div>
+          <div class="info-card-field"><span class="info-card-label">崛起方式</span><p class="info-card-value">織工與棉布貿易</p></div>
+          <div class="info-card-field"><span class="info-card-label">1458年狀態</span><p class="info-card-value">1455年家業由兄弟 Andreas 與 Jakob the Elder 分拆為兩支。1458年當下，角色若遇見這支 Fugger 家族成員，對方是剛失去創業者、由兄弟四人共同持家的本地布商世家，而非日後傳說中的銀行家。</p></div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="cm-ch4">
+      <h2><span class="num">04</span>漢薩同盟貿易網絡</h2>
+      <div class="chapter-rule"></div>
+
+      <h3 class="sub-head">4.1 主要港市與商站</h3>
+      <p>若角色為漢薩商人，活動地圖如下：</p>
+
+      <ul class="info-card-list grid">
+        <li class="info-card">
+          <span class="info-card-title">呂貝克（Lübeck）</span>
+          <div class="info-card-field"><span class="info-card-label">地區</span><p class="info-card-value">波羅的海西部</p></div>
+          <div class="info-card-field"><span class="info-card-label">特色</span><p class="info-card-value">同盟首要城市（Vorort），事實上的議事中樞</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">漢堡（Hamburg）、不來梅（Bremen）</span>
+          <div class="info-card-field"><span class="info-card-label">地區</span><p class="info-card-value">北德意志沿岸</p></div>
+          <div class="info-card-field"><span class="info-card-label">特色</span><p class="info-card-value">帝國自由城市，北海門戶</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">但澤（Danzig）、里加（Riga）、雷瓦爾（Reval）</span>
+          <div class="info-card-field"><span class="info-card-label">地區</span><p class="info-card-value">東波羅的海</p></div>
+          <div class="info-card-field"><span class="info-card-label">特色</span><p class="info-card-value">穀物、木材、琥珀輸出重鎮</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">倫敦「鋼院」（Steelyard）</span>
+          <div class="info-card-field"><span class="info-card-label">地區</span><p class="info-card-value">英格蘭</p></div>
+          <div class="info-card-field"><span class="info-card-label">特色</span><p class="info-card-value">漢薩商人專屬居留區，設自有長老與司法權</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">布魯日（Bruges）</span>
+          <div class="info-card-field"><span class="info-card-label">地區</span><p class="info-card-value">法蘭德斯</p></div>
+          <div class="info-card-field"><span class="info-card-label">特色</span><p class="info-card-value">西歐羊毛布匹貿易樞紐</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">卑爾根（Bergen，德意志橋 Bryggen）</span>
+          <div class="info-card-field"><span class="info-card-label">地區</span><p class="info-card-value">挪威</p></div>
+          <div class="info-card-field"><span class="info-card-label">特色</span><p class="info-card-value">鱈魚乾（stockfish）集散地</p></div>
+        </li>
+        <li class="info-card">
+          <span class="info-card-title">諾夫哥羅德（Novgorod，彼得霍夫 Peterhof）</span>
+          <div class="info-card-field"><span class="info-card-label">地區</span><p class="info-card-value">俄羅斯</p></div>
+          <div class="info-card-field"><span class="info-card-label">特色</span><p class="info-card-value">毛皮、蜂蠟貿易站，僅限貿易季短期居留</p></div>
+        </li>
+      </ul>
+
+      <h3 class="sub-head">4.2 常見貨物</h3>
+      <ul>
+        <li><b>鹽</b>：呂訥堡出產，用於醃製鯡魚</li>
+        <li><b>魚</b>：斯堪尼亞鯡魚、卑爾根鱈魚乾（四旬期齋戒必需品）</li>
+        <li><b>東方物產</b>：穀物、木材、琥珀、蜂蠟、毛皮（經維斯瓦河、涅曼河運出）</li>
+        <li><b>西方物產</b>：法蘭德斯與英格蘭布料、金屬製品</li>
+        <li><b>其他</b>：啤酒、瀝青、焦油</li>
+      </ul>
+
+      <h3 class="sub-head">4.3 航運工具</h3>
+      <p>主力船型是「柯克船」（cog / Kogge），長約15–25公尺、寬5–8公尺。
+      商人常合資共有一艘船（最多可達64名共同持有人），分散船難與海上劫掠的風險。
+      1440年代起，荷蘭（阿姆斯特丹）船隻開始大量擠進波羅的海航線，跟漢薩商船搶同一條貿易路線。</p>
+    </section>
+
+    <section class="chapter" id="cm-refs">
+      <details class="refs-details">
+        <summary>
+          <h2><span class="num">05</span>參考來源</h2>
+          <span class="refs-toggle"><span class="when-closed">展開 ＋</span><span class="when-open">收合 −</span></span>
+        </summary>
+      <div class="chapter-rule"></div>
+      <ul class="refs">
+        <li><a href="https://www.britannica.com/topic/Hanseatic-League" target="_blank" rel="noopener">Hanseatic League – Encyclopædia Britannica</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Dano-Hanseatic_War_(1426%E2%80%931435)" target="_blank" rel="noopener">Dano-Hanseatic War（1426–1435） – Wikipedia</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Hanseatic_Diet" target="_blank" rel="noopener">Hanseatic Diet – Wikipedia</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/L%C3%BCbeck_law" target="_blank" rel="noopener">Lübeck law – Wikipedia</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Thirteen_Years%27_War_(1454%E2%80%931466)" target="_blank" rel="noopener">Thirteen Years' War（1454–1466） – Wikipedia</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/History_of_Gda%C5%84sk" target="_blank" rel="noopener">History of Gdańsk – Wikipedia</a></li>
+        <li><a href="https://link.springer.com/chapter/10.1057/9781137460233_12" target="_blank" rel="noopener">Financial Obligations of the City of Gdańsk to King Casimir IV Jagiellon – Springer</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Letter_of_marque" target="_blank" rel="noopener">Letter of marque – Wikipedia</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Privateer" target="_blank" rel="noopener">Privateer – Wikipedia</a></li>
+        <li><a href="https://drw-www.adw.uni-heidelberg.de/drw-cgi/zeige?index=lemmata&term=kaperbrief" target="_blank" rel="noopener">Kaperbrief – Deutsches Rechtswörterbuch</a></li>
       </ul>
       </details>
     </section>
@@ -1966,26 +2220,12 @@
     if(e.key === 'Escape'){ closePanel(); closePagetabsMenu(); }
   });
 
-  var buttons = document.querySelectorAll('#filterSeg button');
-  buttons.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      buttons.forEach(function(b){ b.classList.remove('active'); });
-      btn.classList.add('active');
-      document.body.classList.remove('mode-verified','mode-inference');
-      var mode = btn.getAttribute('data-mode');
-      if(mode === 'verified') document.body.classList.add('mode-verified');
-      if(mode === 'inference') document.body.classList.add('mode-inference');
-    });
-  });
-
   /* ---------- Multi-page routing ---------- */
-  var PAGES_WITH_FILTER = { intro:false, districts:false, uneven:true, climate:true, monastery:false, food:false, herbs:false };
-  var PAGES_WITH_TOC = { intro:false, districts:true, uneven:true, climate:true, monastery:true, food:true, herbs:true };
+  var PAGES_WITH_TOC = { intro:false, districts:true, commerce:true, uneven:true, climate:true, monastery:true, food:true, herbs:true };
   var pageEls = {};
   document.querySelectorAll('.page').forEach(function(p){ pageEls[p.getAttribute('data-page')] = p; });
   var pageTabs = Array.prototype.slice.call(document.querySelectorAll('.pagetab'));
   var pagetabsCurrentLabel = document.getElementById('pagetabsCurrentLabel');
-  var filterboxInline = document.getElementById('filterboxInline');
   var tocLists = {};
   document.querySelectorAll('nav.toc[data-toc-for]').forEach(function(n){ tocLists[n.getAttribute('data-toc-for')] = n; });
 
@@ -2021,9 +2261,6 @@
     Object.keys(tocLists).forEach(function(key){
       tocLists[key].hidden = (key !== id);
     });
-    if(filterboxInline){
-      filterboxInline.style.display = PAGES_WITH_FILTER[id] ? '' : 'none';
-    }
     if(menuBtn){
       menuBtn.style.display = PAGES_WITH_TOC[id] ? '' : 'none';
     }
